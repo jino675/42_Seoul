@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 12:37:24 by jiryu             #+#    #+#             */
-/*   Updated: 2023/02/23 23:57:44 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/02/26 21:43:36 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 10
+# endif
+
+# if BUFFER_SIZE <= 0
+#  undef BUFFER_SIZE
 #  define BUFFER_SIZE 10
 # endif
 
