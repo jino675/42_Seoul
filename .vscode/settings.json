@@ -16,5 +16,6 @@
 		"unordered_map": "c",
 		"vector": "c",
 		"memory": "c"
-	}
+	},
+	"C_Cpp.errorSquiggles": "disabled"
 }

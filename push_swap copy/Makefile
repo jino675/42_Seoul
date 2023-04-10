@@ -5,63 +5,55 @@
 #                                                     +:+ +:+         +:+      #
 #    By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/01/27 16:44:18 by jiryu             #+#    #+#              #
-#    Updated: 2023/04/06 15:18:20 by jiryu            ###   ########.fr        #
+#    Created: 2023/04/06 14:32:30 by jiryu             #+#    #+#              #
+#    Updated: 2023/04/09 19:56:02 by jiryu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = libftprintf.a
+NAME = push_swap
 
-SRCS = 	ft_printf.c				\
-		sub_putchar_fd.c		\
-		sub_putstr_fd.c			\
-		sub_putnbr_fd.c			\
-		sub_putunbr_fd.c		\
-		sub_putlhex_fd.c		\
-		sub_putuhex_fd.c		\
-		sub_putptr_fd.c
-		
-OBJS = $(SRCS:.c=.o)
-
-HDRS = ft_printf.h
-
-
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
-AR = ar
-ARFLAGS = -rcusv
+RM = rm
 
 
-LIBFT = libft.a
-INC_OPT = -L./ -lftprintf
+SRCS = push_swap.c			\
+		main.c				\
+		stack.c				\
+		utils.c				\
+		receive.c			\
+		instructions_1.c	\
+		instructions_2.c	\
+		instructions_3.c	\
 
+OBJS = $(SRCS:.c=.o)
 
-RM = rm -f
+HDRS = push_swap.h
+
+LIBFT = libft/libft.a
+INC_OPT = -L./libft/ -lft
 
 
 all : $(NAME)
 
-$(NAME) : $(LIBFT) $(OBJS)
+$(NAME) : $(LIBFT) $(OBJS) $(HDRS)
+	$(CC) $(CFLAGS) $(INC_OPT) -o $@ $(OBJS)
 
-%.o : %.c $(HDRS)
-	$(CC) $(CFLAGS) -c -o $@ $< 
-	$(AR) $(ARFLAGS) $(NAME) $@
-
-$(LIBFT) :
+$(LIBFT) : 
 	$(MAKE) -C ./libft all
 	$(MAKE) -C ./libft clean
-	mv ./libft/libft.a ./libftprintf.a
+
+%.o : %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean :
-	$(RM) $(OBJS)
+	$(RM) -rf $(OBJS)
 
 fclean : clean
-	$(RM) $(NAME)
+	$(RM) -rf $(NAME)
+	$(MAKE) -C ./libft fclean
 
 re : fclean all
 
-PHONY : all clean fclean re main
-
-main : $(NAME)
-	$(CC) $(CFLAGS) $(INC_OPT) -g -o run_test main.c
+PHONY : all clean fclean re
