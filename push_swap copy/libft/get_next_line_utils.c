@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 18:09:05 by jiryu             #+#    #+#             */
-/*   Updated: 2023/04/06 13:56:45 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/04/13 14:15:22 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	sub_strlcpy(char *dst, const char *src, size_t dstsize)
 		dst[i] = '\0';
 }
 
-int	sub_strjoin(char **res, t_list *cur, size_t len2)
+int	sub_strjoin(char **res, t_gnl *cur, size_t len2)
 {
 	char	*temp;
 	char	*src;
@@ -86,9 +86,9 @@ int	sub_strjoin(char **res, t_list *cur, size_t len2)
 	return (0);
 }
 
-void	sub_free(t_list **buffers_adr, t_list *cur, char **res_adr, int flag)
+void	sub_free(t_gnl **buffers_adr, t_gnl *cur, char **res_adr, int flag)
 {
-	t_list	*ptr;
+	t_gnl	*ptr;
 
 	if (flag == -1 && *res_adr != NULL)
 	{

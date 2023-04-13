@@ -15,7 +15,9 @@
 		"string_view": "c",
 		"unordered_map": "c",
 		"vector": "c",
-		"memory": "c"
+		"memory": "c",
+		"push_swap.h": "c",
+		"push_swap_bonus.h": "c"
 	},
 	"C_Cpp.errorSquiggles": "disabled"
 }

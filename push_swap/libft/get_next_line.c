@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 17:41:39 by jiryu             #+#    #+#             */
-/*   Updated: 2023/04/06 13:56:40 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/04/13 16:09:36 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	sub_get_index(const char *s, int idx, int mode)
 	return (idx);
 }
 
-static int	process_buffer(t_list *cur, char **res_adr)
+static int	process_buffer(t_gnl *cur, char **res_adr)
 {
 	int	i;
 
@@ -65,7 +65,7 @@ static int	process_buffer(t_list *cur, char **res_adr)
 	}
 }
 
-static void	sub_gnl(t_list **buffers_adr, t_list *cur, char **res_adr, int fd)
+static void	sub_gnl(t_gnl **buffers_adr, t_gnl *cur, char **res_adr, int fd)
 {
 	ssize_t	count;
 	int		flag;
@@ -85,9 +85,9 @@ static void	sub_gnl(t_list **buffers_adr, t_list *cur, char **res_adr, int fd)
 	return ;
 }
 
-static t_list	*sub_init_find(t_list **buffers_adr, int fd)
+static t_gnl	*sub_init_find(t_gnl **buffers_adr, int fd)
 {
-	t_list	*temp;
+	t_gnl	*temp;
 	int		i;
 
 	temp = *buffers_adr;
@@ -95,7 +95,7 @@ static t_list	*sub_init_find(t_list **buffers_adr, int fd)
 		temp = temp->next;
 	if (temp != NULL && temp->fd == fd)
 		return (temp);
-	temp = (t_list *)malloc(sizeof(t_list));
+	temp = (t_gnl *)malloc(sizeof(t_gnl));
 	if (temp == NULL)
 		return (NULL);
 	temp->buffer = (char *)malloc(sizeof(char) * BUFFER_SIZE);
@@ -115,8 +115,8 @@ static t_list	*sub_init_find(t_list **buffers_adr, int fd)
 
 char	*get_next_line(int fd)
 {
-	static t_list	*buffers;
-	t_list			*cur;
+	static t_gnl	*buffers;
+	t_gnl			*cur;
 	char			*res;
 	int				flag;
 
