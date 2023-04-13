@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 19:49:46 by jiryu             #+#    #+#             */
-/*   Updated: 2023/04/13 17:18:10 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/04/13 21:21:48 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,9 @@ static int	sub_atoi(char *str, t_stack *b)
 		++i;
 	flag = 1;
 	if (str[i] == '+' || str[i] == '-')
-	{
-		flag *= 44 - str[i];
-		++i;
-	}
+		flag *= 44 - str[i++];
+	if (str[i] == '\0')
+		error_exit(NULL, b);
 	res = 0;
 	while (str[i] >= '0' && str[i] <= '9')
 	{
@@ -72,6 +71,8 @@ static void	check(t_stack *a, t_stack *b)
 	int		count;
 
 	count = b->count;
+	if (count == 0)
+		error_exit(a, b);
 	i = -1;
 	while (++i < count)
 		pa(a, b, 0, NULL);
@@ -100,6 +101,7 @@ void	take_input(int arc, char **arv, t_stack *a, t_stack *b)
 			push(b, tmp);
 			free(strs[j]);
 		}
+		free(strs);
 	}
 	check(a, b);
 }

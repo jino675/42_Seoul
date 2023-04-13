@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 17:48:31 by jiryu             #+#    #+#             */
-/*   Updated: 2023/04/13 17:19:23 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/04/13 21:03:02 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,5 @@ void	destroy(t_stack *s)
 // 	if (s->bottom != NULL)
 // 		ft_printf("----bottom : %d----\n", s->bottom->val);
 // 	else
-// 		ft_printf("----bottom----\n");
+// 		ft_printf("----bottom----\n\n");
 // }

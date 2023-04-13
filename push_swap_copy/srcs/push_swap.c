@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:00:51 by jiryu             #+#    #+#             */
-/*   Updated: 2023/04/13 17:02:38 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/04/13 21:02:30 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,19 +144,3 @@ static void	btoa(t_stack *a, t_stack *b, int cur_size)
 	atob(a, b, e.n_ra);
 	btoa(a, b, e.n_rb);
 }
-
-	// ft_printf("atob, cur_size : %d, a->count : %d, b->count : %d\n", 
-	//cur_size, a->count, b->count);
-	// ft_printf("    stack A\n");
-	// display(a);
-	// ft_printf("\n\n    stack B\n");
-	// display(b);
-
-	// ft_printf("btoa, cur_size : %d, a->count : %d, b->count : %d\n", 
-	//cur_size, a->count, b->count);
-	// ft_printf("    stack A\n");
-	// display(a);
-	// ft_printf("\n\n    stack B\n");
-	// display(b);
-
-	// ft_printf("p1 : %d, p2 : %d\n", e->p1, e->p2);
