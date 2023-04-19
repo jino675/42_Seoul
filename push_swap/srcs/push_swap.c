@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:00:51 by jiryu             #+#    #+#             */
-/*   Updated: 2023/04/13 21:02:30 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/04/15 18:03:11 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	atob(t_stack *a, t_stack *b, int cur_size)
 		return ;
 	}
 	if (init_etc(&e, a, cur_size) == -1)
-		memory_exit(a, b);
+		memory_exit(a, b, NULL, 0);
 	i = -1;
 	while (++i < cur_size)
 	{
@@ -127,7 +127,7 @@ static void	btoa(t_stack *a, t_stack *b, int cur_size)
 		return ;
 	}
 	if (init_etc(&e, b, cur_size) == -1)
-		memory_exit(a, b);
+		memory_exit(a, b, NULL, 0);
 	i = -1;
 	while (++i < cur_size)
 	{

@@ -6,37 +6,37 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 19:49:46 by jiryu             #+#    #+#             */
-/*   Updated: 2023/04/13 21:21:34 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/04/15 18:55:42 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hdrs/push_swap.h"
 
-static int	sub_atoi(char *str, t_stack *b)
+static int	sub_atoi(char **str, int j, t_stack *b)
 {
 	size_t		i;
 	int			flag;
 	long long	res;
 
 	i = 0;
-	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
+	while ((str[j][i] >= 9 && str[j][i] <= 13) || str[j][i] == 32)
 		++i;
 	flag = 1;
-	if (str[i] == '+' || str[i] == '-')
-		flag *= 44 - str[i++];
-	if (str[i] == '\0')
-		error_exit(NULL, b);
+	if (str[j][i] == '+' || str[j][i] == '-')
+		flag *= 44 - str[j][i++];
+	if (str[j][i] == '\0')
+		error_exit(NULL, b, str, j);
 	res = 0;
-	while (str[i] >= '0' && str[i] <= '9')
+	while (str[j][i] >= '0' && str[j][i] <= '9')
 	{
 		res *= 10;
-		res += (str[i] - '0') * flag;
+		res += (str[j][i] - '0') * flag;
 		++i;
 		if (res > 2147483647 || res < -2147483648)
-			error_exit(NULL, b);
+			error_exit(NULL, b, str, j);
 	}
-	if (i < ft_strlen(str))
-		error_exit(NULL, b);
+	if (i < ft_strlen(str[j]))
+		error_exit(NULL, b, str, j);
 	return ((int) res);
 }
 
@@ -58,7 +58,7 @@ static void	check_dup(t_stack *a)
 		while (++j < a->count)
 		{
 			if (c_nod->val == t_nod->val)
-				error_exit(a, NULL);
+				error_exit(a, NULL, NULL, 0);
 			t_nod = t_nod->next;
 		}
 		c_nod = c_nod->next;
@@ -94,8 +94,6 @@ static void	check(t_stack *a, t_stack *b)
 	int		count;
 
 	count = b->count;
-	if (count == 0)
-		error_exit(a, b);
 	i = -1;
 	while (++i < count)
 		pa(a, b, 0, NULL);
@@ -116,12 +114,14 @@ void	take_input(int arc, char **arv, t_stack *a, t_stack *b)
 	while (++i < arc)
 	{
 		strs = ft_split(arv[i], ' ');
+		if (strs == NULL)
+			memory_exit(a, b, NULL, 0);
 		j = -1;
 		while (strs[++j] != NULL)
 		{
-			tmp = new(sub_atoi(strs[j], b));
+			tmp = new(sub_atoi(strs, j, b));
 			if (tmp == NULL)
-				memory_exit(a, b);
+				memory_exit(a, b, strs, j);
 			push(b, tmp);
 			free(strs[j]);
 		}

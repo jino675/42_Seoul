@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 13:54:54 by jiryu             #+#    #+#             */
-/*   Updated: 2023/04/13 21:00:24 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/04/15 18:53:41 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ void	take_command(t_stack *a, t_stack *b)
 		if (cmd == NULL)
 			break ;
 		sub_take_command(cmd, a, b, &flag);
-		if (flag == 1)
-			error_exit(a, b);
 		free(cmd);
+		if (flag == 1)
+			error_exit(a, b, NULL, 0);
 	}
 }

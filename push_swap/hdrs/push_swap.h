@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:00:55 by jiryu             #+#    #+#             */
-/*   Updated: 2023/04/13 21:03:14 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/04/15 18:07:59 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ int		rrb(t_stack *b, int print);
 int		rra(t_stack *a, int print);
 int		pb(t_stack *a, t_stack *b, int print, t_etc *e);
 int		pa(t_stack *a, t_stack *b, int print, t_etc *e);
-void	error_exit(t_stack *a, t_stack *b);
+void	error_exit(t_stack *a, t_stack *b, char **strs, int j);
 void	normal_exit(t_stack *a, t_stack *b);
-void	memory_exit(t_stack *a, t_stack *b);
+void	memory_exit(t_stack *a, t_stack *b, char **strs, int j);
 void	take_input(int arc, char **arv, t_stack *a, t_stack *b);
 void	atob(t_stack *a, t_stack *b, int count);
 // void	display(t_stack *s);
