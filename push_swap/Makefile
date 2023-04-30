@@ -6,7 +6,7 @@
 #    By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/06 14:32:30 by jiryu             #+#    #+#              #
-#    Updated: 2023/04/13 17:01:52 by jiryu            ###   ########.fr        #
+#    Updated: 2023/04/19 20:34:12 by jiryu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,10 +64,10 @@ $(LIBFT) :
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean :
-	$(RM) -rf $(OBJS) $(OBJS_BONUS)
+	$(RM) -f $(OBJS) $(OBJS_BONUS)
 
 fclean : clean
-	$(RM) -rf $(NAME) $(NAME_BONUS)
+	$(RM) -f $(NAME) $(NAME_BONUS)
 	$(MAKE) -C ./libft fclean
 
 re : fclean all

@@ -1,41 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/17 15:31:43 by jiryu             #+#    #+#             */
-/*   Updated: 2023/04/20 16:48:14 by jiryu            ###   ########.fr       */
+/*   Created: 2023/01/17 15:09:52 by jiryu             #+#    #+#             */
+/*   Updated: 2023/01/22 13:38:45 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strjoin(char **s1_adr, char const *s2)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	size_t	len1;
-	size_t	len2;
+	size_t	s_len;
 	size_t	size;
-	char	*temp;
+	char	*res;
 
-	if (*s1_adr != NULL)
-		len1 = ft_strlen(*s1_adr);
+	s_len = ft_strlen(s);
+	if (start >= s_len)
+		size = 0;
 	else
-		len1 = 0;
-	len2 = ft_strlen(s2);
-	size = len1 + len2 + 1;
-	temp = (char *)malloc(sizeof(char) * size);
-	if (temp == NULL)
-		return (-1);
-	if (*s1_adr != NULL)
-	{
-		ft_strlcpy(temp, *s1_adr, len1 + 1);
-		ft_strlcat(temp, s2, size);
-		free(*s1_adr);
-	}
+		size = s_len - start;
+	if (size > len)
+		size = len;
+	res = (char *)malloc(sizeof(char) * (size + 1));
+	if (res == NULL)
+		return (NULL);
+	if (start >= s_len)
+		res[0] = '\0';
 	else
-		ft_strlcpy(temp, s2, size);
-	*s1_adr = temp;
-	return (0);
+		ft_strlcpy(res, &(s[start]), size + 1);
+	return (res);
 }

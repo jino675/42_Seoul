@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 10:41:29 by jiryu             #+#    #+#             */
-/*   Updated: 2023/04/20 16:35:41 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/04/26 20:45:06 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,6 @@ void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 char	*get_next_line(int fd);
 int		ft_printf(const char *format, ...);
+char	*ft_kmp(const char *str, const char *pat);
 
 #endif
