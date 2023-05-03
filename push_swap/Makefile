@@ -6,7 +6,7 @@
 #    By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/06 14:32:30 by jiryu             #+#    #+#              #
-#    Updated: 2023/04/19 20:34:12 by jiryu            ###   ########.fr        #
+#    Updated: 2023/05/03 18:21:28 by jiryu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ SRCS = srcs/main.c				\
 OBJS = $(SRCS:.c=.o)
 
 SRCS_BONUS = srcs_bonus/main_bonus.c		\
-		srcs_bonus/checker_bonus.c		\
+		srcs_bonus/checker_bonus.c			\
 		srcs_bonus/instructions_1_bonus.c	\
 		srcs_bonus/instructions_2_bonus.c	\
 		srcs_bonus/instructions_3_bonus.c	\

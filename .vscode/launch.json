@@ -8,8 +8,14 @@
 		"name": "(lldb) 시작",
 		"type": "cppdbg",
 		"request": "launch",
-		"program": "${workspaceFolder}/get_next_line/test",
-		"args": [],
+		"program": "${workspaceFolder}/pipex/pipex",
+		"args": [
+			"here_doc",
+			"hello",
+			"grep hello",
+			"cat -n",
+			"output.txt"
+		],
 		"stopAtEntry": true,
 		"cwd": "${fileDirname}",
 		"environment": [],

@@ -6,7 +6,7 @@
 #    By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/22 18:12:11 by jiryu             #+#    #+#              #
-#    Updated: 2023/04/26 20:50:05 by jiryu            ###   ########.fr        #
+#    Updated: 2023/05/03 17:42:45 by jiryu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ SRCS =	ft_isalpha.c		\
 		ft_strchr.c			\
 		ft_strrchr.c		\
 		ft_strncmp.c		\
+		ft_strcmp.c			\
 		ft_strlcpy.c		\
 		ft_strlcat.c		\
 		ft_strnstr.c		\
