@@ -6,21 +6,11 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 18:35:02 by jiryu             #+#    #+#             */
-/*   Updated: 2023/05/03 21:22:08 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/05/06 18:15:06 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hdrs_mandatory/pipex.h"
-
-typedef struct s_etc_2
-{
-	int		x_idx;
-	int		y_idx;
-	int		flag;
-	int		each_size;
-	int		word_count;
-	char	**res;
-}	t_etc_2;
 
 static void	sub_copy_words(t_etc_2 *e2, char const *s, int *i)
 {

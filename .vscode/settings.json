@@ -20,7 +20,11 @@
 		"push_swap_bonus.h": "c",
 		"endian.h": "c",
 		"pipex_bonus.h": "c",
-		"pipex.h": "c"
+		"pipex.h": "c",
+		"stdio.h": "c",
+		"string.h": "c",
+		"__config": "c",
+		"locale": "c"
 	},
 	"C_Cpp.errorSquiggles": "disabled"
 }

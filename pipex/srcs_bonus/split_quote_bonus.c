@@ -6,21 +6,11 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 18:27:12 by jiryu             #+#    #+#             */
-/*   Updated: 2023/05/03 21:21:43 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/05/06 18:14:13 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hdrs_bonus/pipex_bonus.h"
-
-typedef struct s_etc_2
-{
-	int		x_idx;
-	int		y_idx;
-	int		flag;
-	int		each_size;
-	int		word_count;
-	char	**res;
-}	t_etc_2;
 
 void	copy_words(t_etc_2 *e2, char const *s, char c);
 int		malloc_guard(t_etc_2 *e2, char **str_adr);

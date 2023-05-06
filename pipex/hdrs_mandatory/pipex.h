@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 19:55:28 by jiryu             #+#    #+#             */
-/*   Updated: 2023/05/03 18:19:41 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/05/06 18:14:04 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,18 @@ typedef struct s_etc
 	char	**strs;
 	char	**paths;
 	char	*cmd;
+	char	default_paths[6][18];
 }	t_etc;
+
+typedef struct s_etc_2
+{
+	int		x_idx;
+	int		y_idx;
+	int		flag;
+	int		each_size;
+	int		word_count;
+	char	**res;
+}	t_etc_2;
 
 void	error_exit(char const *msg_1, char const *msg_2, t_etc *e);
 void	pre_exec(t_etc *e, char *input, char **envp);

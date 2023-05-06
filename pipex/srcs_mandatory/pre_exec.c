@@ -6,13 +6,13 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 17:45:48 by jiryu             #+#    #+#             */
-/*   Updated: 2023/05/03 21:22:06 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/05/06 22:35:03 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hdrs_mandatory/pipex.h"
 
-static void	sub_free(t_etc *e)
+static void	sub_free_path(t_etc *e)
 {
 	int	i;
 
@@ -28,14 +28,7 @@ static void	sub_find_path_default(t_etc *e, const char *cmd, char **res_adr)
 	int		i;
 	int		size;
 	char	*tmp;
-	char	default_paths[6][18];
 
-	ft_strlcpy(default_paths[0], "/bin/", 18);
-	ft_strlcpy(default_paths[1], "/sbin/", 18);
-	ft_strlcpy(default_paths[2], "/usr/bin/", 18);
-	ft_strlcpy(default_paths[3], "/usr/sbin/", 18);
-	ft_strlcpy(default_paths[4], "/usr/local/bin/", 18);
-	ft_strlcpy(default_paths[5], "/usr/local/munki/", 18);
 	size = 17 + ft_strlen(cmd) + 1;
 	tmp = (char *)malloc(sizeof(char) * size);
 	if (tmp == NULL)
@@ -43,7 +36,7 @@ static void	sub_find_path_default(t_etc *e, const char *cmd, char **res_adr)
 	i = -1;
 	while (++i < 6)
 	{
-		ft_strlcpy(tmp, default_paths[i], size);
+		ft_strlcpy(tmp, e->default_paths[i], size);
 		ft_strlcat(tmp, cmd, size);
 		if (access(tmp, X_OK) == 0)
 		{
@@ -104,7 +97,7 @@ static char	*find_path(t_etc *e, char **envp, const char *cmd)
 		if (e->paths == NULL)
 			error_exit(NULL, "memory allocation error!", e);
 		sub_find_path(e, cmd, &res);
-		sub_free(e);
+		sub_free_path(e);
 	}
 	return (res);
 }
@@ -114,6 +107,8 @@ void	pre_exec(t_etc *e, char *input, char **envp)
 	e->strs = split_quote(input, ' ');
 	if (e->strs == NULL)
 		error_exit(NULL, "memory allocation error!", e);
+	if (e->strs[0][ft_strlen(e->strs[0]) - 1] == '/')
+		error_exit(NULL, "it is a directory", e);
 	e->cmd = find_path(e, envp, e->strs[0]);
 	if (e->cmd == NULL)
 		error_exit(e->strs[0], "command not found", e);
