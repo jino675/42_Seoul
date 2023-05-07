@@ -6,13 +6,13 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 14:36:33 by jiryu             #+#    #+#             */
-/*   Updated: 2023/05/06 21:23:15 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/05/07 14:29:53 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hdrs_mandatory/pipex.h"
 
-static void	sub_here_doc(char *limiter, int fd)
+static void	sub_here_doc(t_etc *e, char *limiter, int fd)
 {
 	int		i;
 	size_t	size_limiter;
@@ -27,7 +27,8 @@ static void	sub_here_doc(char *limiter, int fd)
 		if (ft_strlen(cur_line) == size_limiter + 1 && \
 				ft_strncmp(cur_line, limiter, size_limiter) == 0)
 			break ;
-		write(fd, cur_line, ft_strlen(cur_line));
+		if (write(fd, cur_line, ft_strlen(cur_line)) == -1)
+			error_exit(NULL, "write error!", e);
 		ft_printf("heredoc> ");
 	}
 }
@@ -43,7 +44,7 @@ int	here_doc(t_etc *e, char *limiter)
 	fd = open("/tmp/.pipex_here_doc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 		error_exit("/tmp/here_doc", "open error!", e);
-	sub_here_doc(limiter, fd);
+	sub_here_doc(e, limiter, fd);
 	close(fd);
 	fd = open("/tmp/.pipex_here_doc", O_RDONLY);
 	if (fd == -1)

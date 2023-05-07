@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 19:55:17 by jiryu             #+#    #+#             */
-/*   Updated: 2023/05/06 22:20:25 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/05/07 14:25:01 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ static void	sub_sub_pipe_end(t_etc *e, char **argv, char **envp)
 	e->fd_out = open(argv[e->idx_file], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (e->fd_out == -1)
 		error_exit(argv[e->idx_file], "open error!", e);
-	pre_exec(e, argv[e->idx_cmd], envp);
 	if (dup2(e->fds[e->idx_fds - 1][0], 0) == -1)
 		error_exit(NULL, "dup2 error!", e);
 	close(e->fds[e->idx_fds - 1][0]);
 	if (dup2(e->fd_out, 1) == -1)
 		error_exit(NULL, "dup2 error!", e);
 	close(e->fd_out);
+	pre_exec(e, argv[e->idx_cmd], envp);
 	if (execve(e->cmd, e->strs, envp) == -1)
 	{
 		close(0);

@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 17:53:19 by jiryu             #+#    #+#             */
-/*   Updated: 2023/05/06 22:20:31 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/05/07 14:25:45 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ static void	sub_sub_pipe_start(t_etc *e, char **argv, char **envp)
 		if (e->fd_in == -1)
 			error_exit("input", "No such file or directory", e);
 	}
-	pre_exec(e, argv[2 + e->is_hd], envp);
 	close(e->fds[0][0]);
 	if (dup2(e->fd_in, 0) == -1)
 		error_exit(NULL, "dup2 error!", e);
@@ -30,6 +29,7 @@ static void	sub_sub_pipe_start(t_etc *e, char **argv, char **envp)
 	if (dup2(e->fds[0][1], 1) == -1)
 		error_exit(NULL, "dup2 error!", e);
 	close(e->fds[0][1]);
+	pre_exec(e, argv[2 + e->is_hd], envp);
 	if (execve(e->cmd, e->strs, envp) == -1)
 	{
 		close(0);
@@ -52,7 +52,6 @@ void	sub_pipe_start(t_etc *e, char **argv, char **envp)
 
 static void	sub_sub_pipe_mid(t_etc *e, char **argv, char **envp)
 {
-	pre_exec(e, argv[e->idx_cmd], envp);
 	close(e->fds[e->idx_fds][0]);
 	if (dup2(e->fds[e->idx_fds - 1][0], 0) == -1)
 		error_exit(NULL, "dup2 error!", e);
@@ -60,6 +59,7 @@ static void	sub_sub_pipe_mid(t_etc *e, char **argv, char **envp)
 	if (dup2(e->fds[e->idx_fds][1], 1) == -1)
 		error_exit(NULL, "dup2 error!", e);
 	close(e->fds[e->idx_fds][1]);
+	pre_exec(e, argv[e->idx_cmd], envp);
 	if (execve(e->cmd, e->strs, envp) == -1)
 	{
 		close(0);
