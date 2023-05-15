@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 18:51:32 by jiryu             #+#    #+#             */
-/*   Updated: 2023/05/06 18:10:10 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/05/15 15:40:48 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,11 @@ static void	init_zero_e(t_etc *e)
 	e->idx_file = 0;
 	e->idx_cmd = 0;
 	e->cmd_count = 0;
+	e->cmd_flag = 0;
 	e->strs = NULL;
 	e->paths = NULL;
 	e->cmd = NULL;
+	e->temp_file = NULL;
 	ft_strlcpy(e->default_paths[0], "/bin/", 18);
 	ft_strlcpy(e->default_paths[1], "/sbin/", 18);
 	ft_strlcpy(e->default_paths[2], "/usr/bin/", 18);
@@ -35,11 +37,11 @@ static void	init_zero_e(t_etc *e)
 	ft_strlcpy(e->default_paths[5], "/usr/local/munki/", 18);
 }
 
-int	main(int argc, char **argv, char **envp)
+int	main(int argc, char **av, char **envp)
 {
 	t_etc	e;
 
 	init_zero_e(&e);
-	pipe_run(&e, argc, argv, envp);
+	pipe_run(&e, argc, av, envp);
 	return (0);
 }

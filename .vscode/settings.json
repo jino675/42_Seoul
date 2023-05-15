@@ -24,7 +24,12 @@
 		"stdio.h": "c",
 		"string.h": "c",
 		"__config": "c",
-		"locale": "c"
+		"locale": "c",
+		"fcntl.h": "c",
+		"__node_handle": "c",
+		"so_long.h": "c",
+		"utility": "c",
+		"system_error": "c"
 	},
 	"C_Cpp.errorSquiggles": "disabled"
 }

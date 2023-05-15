@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 19:55:28 by jiryu             #+#    #+#             */
-/*   Updated: 2023/05/07 14:26:28 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/05/15 15:45:25 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,11 @@ typedef struct s_etc
 	int		idx_file;
 	int		idx_cmd;
 	int		cmd_count;
+	int		cmd_flag;
 	char	**strs;
 	char	**paths;
 	char	*cmd;
+	char	*temp_file;
 	char	default_paths[6][18];
 }	t_etc;
 
@@ -49,11 +51,9 @@ typedef struct s_etc_2
 	char	**res;
 }	t_etc_2;
 
-void	error_exit(char const *msg_1, char const *msg_2, t_etc *e);
+void	error_exit(char const *msg_1, char const *msg_2, t_etc *e, int code);
 void	pre_exec(t_etc *e, char *input, char **envp);
 void	pipe_run(t_etc *e, int argc, char **argv, char **envp);
 char	**split_quote(char const *s, char c);
-void	split_awk(t_etc *e);
-int		here_doc(t_etc *e, char *limiter);
 
 #endif

@@ -6,9 +6,10 @@
 #    By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/22 18:12:11 by jiryu             #+#    #+#              #
-#    Updated: 2023/04/06 14:18:34 by jiryu            ###   ########.fr        #
+#    Updated: 2023/05/13 22:43:51 by jiryu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
 
 NAME = libft.a
 
@@ -34,6 +35,7 @@ SRCS =	ft_isalpha.c		\
 		ft_strchr.c			\
 		ft_strrchr.c		\
 		ft_strncmp.c		\
+		ft_strcmp.c			\
 		ft_strlcpy.c		\
 		ft_strlcat.c		\
 		ft_strnstr.c		\
@@ -42,6 +44,7 @@ SRCS =	ft_isalpha.c		\
 		ft_strdup.c			\
 		ft_substr.c			\
 		ft_strjoin.c		\
+		ft_strattach.c		\
 		ft_strtrim.c		\
 		ft_split.c			\
 		ft_itoa.c			\
@@ -61,6 +64,7 @@ SRCS =	ft_isalpha.c		\
 		ft_lstiter.c		\
 		ft_lstmap.c			\
 		ft_printf.c			\
+		ft_kmp.c			\
 		sub_putchar_fd.c	\
 		sub_putstr_fd.c		\
 		sub_putnbr_fd.c		\

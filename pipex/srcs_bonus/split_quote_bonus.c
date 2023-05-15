@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 18:27:12 by jiryu             #+#    #+#             */
-/*   Updated: 2023/05/07 14:25:37 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/05/15 15:44:38 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,15 @@ static int	sub_cal_count(char const *s, int *i)
 		if (s[*i] == '\0')
 			return (-1);
 	}
-	else if (s[*i] == '\"')
+	else if (s[*i] == '\"' && (*i > 0 && s[(*i) - 1] != '\\'))
 	{
 		*i += 1;
 		while (s[*i] != '\0' && s[*i] != '\"')
+		{
+			if (s[*i] == '\\' && s[(*i) + 1] != '\0' && s[(*i) + 1] == '\"')
+				*i += 1;
 			*i += 1;
+		}
 		if (s[*i] == '\0')
 			return (-1);
 	}
@@ -73,12 +77,14 @@ static void	sub_malloc_words(t_etc_2 *e2, char const *s, int *i)
 			*i += 1;
 		}
 	}
-	else if (s[*i] == '\"')
+	else if (s[*i] == '\"' && (*i > 0 && s[(*i) - 1] != '\\'))
 	{
 		*i += 1;
-		while (s[*i] != '\"')
+		while (s[*i] != '\0' && s[*i] != '\"')
 		{
-			++e2->each_size;
+			if (s[*i] == '\\' && s[(*i) + 1] != '\0' && s[(*i) + 1] == '\"')
+				*i += 1;
+			e2->each_size += 1;
 			*i += 1;
 		}
 	}

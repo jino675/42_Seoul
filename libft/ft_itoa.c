@@ -6,38 +6,29 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 10:26:38 by jiryu             #+#    #+#             */
-/*   Updated: 2023/01/22 13:36:48 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/05/13 22:24:49 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char	*sub_exception(int n, int *flag)
+static char	*sub_exception(int n)
 {
 	size_t	size;
 	char	*res;
 
-	if (n == -2147483648 || n == 0)
-	{
-		if (n == -2147483648)
-			size = 12;
-		else
-			size = 2;
-		res = (char *)malloc(sizeof(char) * size);
-		if (res == NULL)
-		{
-			*flag = 9;
-			return (NULL);
-		}
-		if (n == -2147483648)
-			ft_strlcpy(res, "-2147483648", size);
-		else if (n == 0)
-			ft_strlcpy(res, "0", size);
-		*flag = 8;
-		return (res);
-	}
+	if (n == -2147483648)
+		size = 12;
 	else
+		size = 2;
+	res = (char *)malloc(sizeof(char) * size);
+	if (res == NULL)
 		return (NULL);
+	if (n == -2147483648)
+		ft_strlcpy(res, "-2147483648", size);
+	else
+		ft_strlcpy(res, "0", size);
+	return (res);
 }
 
 static char	*sub_itoa(char *temp, int size, int flag)
@@ -66,8 +57,9 @@ static char	*sub_itoa(char *temp, int size, int flag)
 	return (res);
 }
 
-static void	sub_temp(int n, int *flag, size_t *size, char *temp)
+static void	find_size_sign(int n, int *flag, size_t *size, char *temp)
 {
+	*flag = 0;
 	if (n < 0)
 	{
 		*flag = 1;
@@ -84,18 +76,14 @@ static void	sub_temp(int n, int *flag, size_t *size, char *temp)
 
 char	*ft_itoa(int n)
 {
-	size_t	size;
 	int		flag;
+	size_t	size;
 	char	temp[11];
 	char	*res;
 
-	flag = 0;
-	res = sub_exception(n, &flag);
-	if (flag == 8)
-		return (res);
-	else if (flag == 9)
-		return (NULL);
-	sub_temp(n, &flag, &size, temp);
+	if (n == -2147483648 || n == 0)
+		return (sub_exception(n));
+	find_size_sign(n, &flag, &size, temp);
 	res = sub_itoa(temp, size, flag);
 	if (res == NULL)
 		return (NULL);

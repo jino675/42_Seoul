@@ -6,7 +6,7 @@
 #    By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/03 19:51:55 by jiryu             #+#    #+#              #
-#    Updated: 2023/05/06 18:05:14 by jiryu            ###   ########.fr        #
+#    Updated: 2023/05/13 22:44:08 by jiryu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,11 +16,11 @@ DIR_SRCS_MANDATORY = ./srcs_mandatory/
 SRCS_MANDATORY = main.c					\
 			pipex.c						\
 			sub_pipex.c					\
+			sub_pipex_here_doc.c		\
 			pre_exec.c					\
 			utils.c						\
 			split_quote.c				\
-			split_quote_2.c				\
-			here_doc.c
+			split_quote_2.c
 		
 OBJS_MANDATORY = $(addprefix $(DIR_SRCS_MANDATORY), $(SRCS_MANDATORY:.c=.o))
 
@@ -32,16 +32,17 @@ DIR_SRCS_BONUS = ./srcs_bonus/
 SRCS_BONUS = main_bonus.c				\
 		pipex_bonus.c					\
 		sub_pipex_bonus.c				\
+		sub_pipex_here_doc_bonus.c		\
 		pre_exec_bonus.c				\
 		utils_bonus.c					\
 		split_quote_bonus.c				\
-		split_quote_2_bonus.c			\
-		here_doc_bonus.c
+		split_quote_2_bonus.c
 
 OBJS_BONUS = $(addprefix $(DIR_SRCS_BONUS), $(SRCS_BONUS:.c=.o))
 
 HDRS_BONUS = ./hdrs_bonus/pipex_bonus.h
 EXE_BONUS = ./srcs_bonus/pipex_bonus
+
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
@@ -77,9 +78,10 @@ $(LIBFT) :
 clean :
 	$(RM) $(OBJS_MANDATORY)
 	$(RM) $(OBJS_BONUS)
+	$(RM) $(OBJS_HERE_DOC)
 
 fclean : clean
-	$(RM) $(NAME) $(EXE_MANDATORY) $(EXE_BONUS)
+	$(RM) $(NAME) $(EXE_MANDATORY) $(EXE_BONUS) $(EXE_HERE_DOC)
 	$(MAKE) -C $(DIR_LIBFT) fclean
 
 re : fclean all
