@@ -8,13 +8,9 @@
 		"name": "(lldb) 시작",
 		"type": "cppdbg",
 		"request": "launch",
-		"program": "${workspaceFolder}/pipex/pipex",
+		"program": "${workspaceFolder}/so_long/so_long",
 		"args": [
-			"here_doc",
-			"hello",
-			"grep hello",
-			"cat -n",
-			"output.txt"
+			"map_default.ber"
 		],
 		"stopAtEntry": true,
 		"cwd": "${fileDirname}",

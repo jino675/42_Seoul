@@ -6,7 +6,7 @@
 #    By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/07 20:30:45 by jiryu             #+#    #+#              #
-#    Updated: 2023/05/08 17:44:22 by jiryu            ###   ########.fr        #
+#    Updated: 2023/05/21 21:15:22 by jiryu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,18 @@ NAME = so_long
 
 DIR_SRCS_MANDATORY = ./srcs_mandatory/
 SRCS_MANDATORY = main.c					\
+				load_images.c			\
+				init_vars.c				\
+				loop_hook.c				\
+				loop_hook_2.c			\
+				hook_functions.c		\
+				move_player.c			\
+				move_enemy.c			\
+				move_enemy_2.c			\
+				map_read.c				\
+				map_read_2.c			\
+				map_read_3.c			\
+				utils.c
 
 OBJS_MANDATORY = $(addprefix $(DIR_SRCS_MANDATORY), $(SRCS_MANDATORY:.c=.o))
 
@@ -23,7 +35,7 @@ EXE_MANDATORY = ./srcs_mandatory/so_long_mandatory
 EXE_BONUS = ./srcs_bonus/so_long_bonus
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 
 # DIR_MLX = ./minilibx_mms_20200219/
 # MLX = ./minilibx_mms_20200219/libmlx.dylib

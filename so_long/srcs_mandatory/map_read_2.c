@@ -5,38 +5,53 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/08 22:24:50 by jiryu             #+#    #+#             */
-/*   Updated: 2023/05/08 22:39:33 by jiryu            ###   ########.fr       */
+/*   Created: 2023/05/15 20:42:18 by jiryu             #+#    #+#             */
+/*   Updated: 2023/05/21 21:45:01 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hdrs_mandatory/so_long.h"
 
-typedef struct s_etc
+static void	sub_check_component(t_vars *v, t_etc *e, int i, int j)
 {
-	int		is_p;
-	int		is_e;
-	int		is_c;
-	int		fd;
-	int		cur_length;
-	char	*cur_line;
-}	t_etc;
+	if (i == 0 || i == v->map_height - 1 || j == 0 || j == v->map_width - 1)
+		if (v->map[i][j] != '1')
+			error_exit("Error", "outline must consist of '1'!", v, e);
+	if (v->map[i][j] == 'P')
+	{
+		++v->p_count;
+		v->p_x = j;
+		v->p_y = i;
+		v->map[i][j] = '0';
+	}
+	else if (v->map[i][j] == 'E')
+	{
+		++v->e_count;
+		v->e_x = j;
+		v->e_y = i;
+	}
+	else if (v->map[i][j] == 'C')
+		++v->c_count;
+	else if (v->map[i][j] != '0' && v->map[i][j] != '1')
+		error_exit("Error", "there's weird component!", v, e);
+}
 
-void	map_check_clear(t_var *v)
+void	check_component(t_vars *v, t_etc *e)
 {
-	int		i;
-	char	**temp_map;
+	int	i;
+	int	j;
 
-	temp_map = (char **)malloc(sizeof(char *) * v->map_height);
-	if (temp_map == NULL)
-		error_exit(NULL, "memory allocation error!", v);
 	i = -1;
 	while (++i < v->map_height)
 	{
-		temp_map[i] = (char *)malloc(sizeof(char) * v->map_width + 1);
-		if (temp_map[i] == NULL)
-			error_exit(NULL, "memory allocation error!", v);
-		ft_strlcpy(temp_map[i], v->map[i], v->width + 1);
+		j = -1;
+		while (v->map[i][++j] != '\0')
+			sub_check_component(v, e, i, j);
 	}
-	bfs(temp_map, v->p_x, v->p_y)
+	if (v->p_count != 1)
+		error_exit("Error", "player must be one!", v, e);
+	if (v->e_count != 1)
+		error_exit("Error", "exit must be one!", v, e);
+	if (v->c_count <= 0)
+		error_exit("Error", "collectible must be at least one!", v, e);
 }
