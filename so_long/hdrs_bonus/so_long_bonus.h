@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   so_long.h                                          :+:      :+:    :+:   */
+/*   so_long_bonus.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 20:01:54 by jiryu             #+#    #+#             */
-/*   Updated: 2023/05/24 14:47:27 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/05/24 15:13:48 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SO_LONG_H
-# define SO_LONG_H
+#ifndef SO_LONG_BONUS_H
+# define SO_LONG_BONUS_H
 
 # include <mlx.h>
 # include <unistd.h>
@@ -51,6 +51,7 @@ typedef struct s_vars
 	void			*enemy_img_sword[4][4];
 	void			*enemy_img_idle[4][4];
 	char			*img_path;
+	char			*move_str;
 	unsigned int	move_count;
 	int				is_moving_p;
 	int				is_moving_e;

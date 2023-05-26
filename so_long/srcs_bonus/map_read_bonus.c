@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_read.c                                         :+:      :+:    :+:   */
+/*   map_read_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 21:35:48 by jiryu             #+#    #+#             */
-/*   Updated: 2023/05/24 15:01:12 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/05/24 15:05:56 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../hdrs_mandatory/so_long.h"
+#include "../hdrs_bonus/so_long_bonus.h"
 
 void	check_component(t_vars *v, t_etc *e);
 void	check_can_clear(t_vars *v, t_etc *e);

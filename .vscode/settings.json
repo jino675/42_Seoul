@@ -29,7 +29,8 @@
 		"__node_handle": "c",
 		"so_long.h": "c",
 		"utility": "c",
-		"system_error": "c"
+		"system_error": "c",
+		"so_long_bonus.h": "c"
 	},
 	"C_Cpp.errorSquiggles": "disabled"
 }

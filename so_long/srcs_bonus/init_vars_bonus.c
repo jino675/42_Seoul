@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_vars.c                                        :+:      :+:    :+:   */
+/*   init_vars_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 18:27:23 by jiryu             #+#    #+#             */
-/*   Updated: 2023/05/24 15:30:12 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/05/24 15:18:35 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../hdrs_mandatory/so_long.h"
+#include "../hdrs_bonus/so_long_bonus.h"
 
 static void	sub_init_vars_1(t_vars *v)
 {
@@ -29,6 +29,7 @@ static void	sub_init_vars_1(t_vars *v)
 	v->heart_img = NULL;
 	v->sign_img = NULL;
 	v->img_path = NULL;
+	v->move_str = NULL;
 }
 
 static void	sub_init_vars_2(t_vars *v)
@@ -69,6 +70,9 @@ void	init_vars(t_vars *v)
 			v->enemy_img_idle[i][j] = NULL;
 		}
 	}
+	v->move_str = ft_strdup("total move : ");
+	if (v->move_str == NULL)
+		error_exit("Error", "memory allocation error!", v, NULL);
 }
 
 void	init_mlx_win(t_vars *v)
@@ -77,7 +81,7 @@ void	init_mlx_win(t_vars *v)
 	if (v->mlx_ptr == NULL)
 		error_exit("Error", "mlx_init error!", v, NULL);
 	v->win_ptr = mlx_new_window(v->mlx_ptr, MAP_UNIT * v->map_width, \
-							MAP_UNIT * (v->map_height), "POOP GAME");
+							MAP_UNIT * (v->map_height + 1), "POOP GAME");
 	if (v->win_ptr == NULL)
 		error_exit("Error", "mlx_new_window error!", v, NULL);
 }

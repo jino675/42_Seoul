@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   loop_hook.c                                        :+:      :+:    :+:   */
+/*   loop_hook_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 18:35:03 by jiryu             #+#    #+#             */
-/*   Updated: 2023/05/24 15:09:34 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/05/24 15:29:10 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../hdrs_mandatory/so_long.h"
+#include "../hdrs_bonus/so_long_bonus.h"
 
 void	draw_player_idle(t_vars *v, int i, int j);
 void	draw_player_walk(t_vars *v, int i, int j);
@@ -25,13 +25,27 @@ static void	draw_background(t_vars *v)
 	int		j;
 
 	i = -1;
-	while (++i < v->map_height)
+	while (++i < v->map_height + 1)
 	{
 		j = -1;
 		while (++j < v->map_width)
 			mlx_put_image_to_window(v->mlx_ptr, v->win_ptr, \
 							v->grass_img, j * MAP_UNIT, i * MAP_UNIT);
 	}
+}
+
+static void	draw_string(t_vars *v)
+{
+	char	*nbr;
+
+	nbr = ft_itoa(v->move_count);
+	if (nbr == NULL)
+		error_exit("Error", "memory allocation error", v, NULL);
+	mlx_string_put(v->mlx_ptr, v->win_ptr, \
+						5, v->map_height * MAP_UNIT, 0xFF0000, v->move_str);
+	mlx_string_put(v->mlx_ptr, v->win_ptr, \
+						135, v->map_height * MAP_UNIT, 0xFF0000, nbr);
+	free(nbr);
 }
 
 static void	draw_all_component(t_vars *v)
@@ -53,6 +67,7 @@ static void	draw_all_component(t_vars *v)
 			draw_enemy_walk(v, i, j);
 		}
 	}
+	draw_string(v);
 }
 
 int	loop_hook(t_vars *v)

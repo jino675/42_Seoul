@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:44:23 by jiryu             #+#    #+#             */
-/*   Updated: 2023/05/24 14:57:35 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/05/24 15:18:58 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../hdrs_mandatory/so_long.h"
+#include "../hdrs_bonus/so_long_bonus.h"
 
 static void	sub_free_v(t_vars *v)
 {
@@ -26,6 +26,8 @@ static void	sub_free_v(t_vars *v)
 		mlx_destroy_image(v->mlx_ptr, v->sign_img);
 	if (v->img_path != NULL)
 		free(v->img_path);
+	if (v->move_str != NULL)
+		free(v->move_str);
 	if (v->win_ptr != NULL)
 		mlx_destroy_window(v->mlx_ptr, v->win_ptr);
 }
