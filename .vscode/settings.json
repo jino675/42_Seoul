@@ -30,7 +30,8 @@
 		"so_long.h": "c",
 		"utility": "c",
 		"system_error": "c",
-		"so_long_bonus.h": "c"
+		"so_long_bonus.h": "c",
+		"philo.h": "c"
 	},
 	"C_Cpp.errorSquiggles": "disabled"
 }
