@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 20:27:48 by jiryu             #+#    #+#             */
-/*   Updated: 2023/06/16 21:22:11 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/06/21 19:44:58 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,23 +26,18 @@ typedef struct s_info
 	int				time_eat;
 	int				time_sleep;
 	int				num_eat;
+	int				is_end;
+	int				*count_eat;
 	struct timeval	start_time;
 }	t_info;
-
-typedef struct s_fork
-{
-	int				is_using;
-	pthread_mutex_t	mutex;
-}	t_fork;
 
 typedef struct s_philo
 {
 	t_info			*info;
-	t_fork			*fork;
+	pthread_mutex_t	*fork;
 	int				number;
 	pthread_t		thread;
 	struct timeval	last_eat;
-	struct timeval	last_sleep;
 }	t_philo;
 
 
