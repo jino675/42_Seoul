@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 17:49:45 by jiryu             #+#    #+#             */
-/*   Updated: 2023/06/21 19:57:05 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/06/22 22:39:40 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static int	sub_init_info(int ac, char **av, t_info *info)
 	int	temp;
 
 	info->num_eat = -1;
-	info->is_end = 0;
+	info->is_died = 0;
+	info->is_completed = 0;
 	info->count_eat = NULL;
 	i = 0;
 	while (++i < ac)
@@ -40,29 +41,19 @@ static int	sub_init_info(int ac, char **av, t_info *info)
 	return (0);
 }
 
-static int	init_info(int ac, char **av, t_info **info)
+static int	init_info(int ac, char **av, t_info *info)
 {
 	if (ac < 5 || ac > 6)
 		return (-1);
 	else if (ac == 5 || ac == 6)
 	{
-		*info = (t_info *)malloc(sizeof(t_info) * 1);
-		if (*info == NULL)
+		if (sub_init_info(ac, av, info) == -1)
 			return (-1);
-		if (sub_init_info(ac, av, *info) == -1)
+		if (info->num_eat != -1)
 		{
-			free(*info);
-			return (-1);
-		}
-		if ((*info)->num_eat != -1)
-		{
-			(*info)->count_eat = (int *)malloc(sizeof(int) * \
-												(*info)->num_philo);
-			if ((*info)->count_eat == NULL)
-			{
-				free(*info);
+			info->count_eat = (int *)malloc(sizeof(int) * info->num_philo);
+			if (info->count_eat == NULL)
 				return (-1);
-			}
 		}
 	}
 	return (0);
@@ -75,7 +66,6 @@ static int	sub_init_vars(t_info *info, t_philo **philo, pthread_mutex_t **fork)
 	{
 		if (info->count_eat != NULL)
 			free(info->count_eat);
-		free(info);
 		return (-1);
 	}
 	*fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * \
@@ -84,20 +74,18 @@ static int	sub_init_vars(t_info *info, t_philo **philo, pthread_mutex_t **fork)
 	{
 		if (info->count_eat != NULL)
 			free(info->count_eat);
-		free(info);
 		free(*philo);
 		return (-1);
 	}
 	return (0);
 }
 
-int	init_vars(int ac, char **av, t_philo **philo)
+int	init_vars(int ac, char **av, t_info *info, t_philo **philo)
 {
 	int					i;
-	t_info				*info;
 	pthread_mutex_t		*fork;
 
-	if (init_info(ac, av, &info) == -1)
+	if (init_info(ac, av, info) == -1)
 		return (-1);
 	if (sub_init_vars(info, philo, &fork) == -1)
 		return (-1);
