@@ -6,7 +6,7 @@
 #    By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/16 20:23:42 by jiryu             #+#    #+#              #
-#    Updated: 2023/06/16 20:33:27 by jiryu            ###   ########.fr        #
+#    Updated: 2023/06/24 17:10:23 by jiryu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,7 @@ EXE_MANDATORY = ./srcs_mandatory/philo_mandatory
 # EXE_BONUS = ./srcs_bonus/so_long_bonus
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 
 RM = rm -f
 CP = cp
