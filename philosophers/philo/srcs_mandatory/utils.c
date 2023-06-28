@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 20:31:33 by jiryu             #+#    #+#             */
-/*   Updated: 2023/06/22 22:56:44 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/06/28 20:15:05 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,14 @@ int	ft_atoi(char *str)
 	return ((int) res);
 }
 
-void	free_vars(t_info *info, t_philo *philo, pthread_mutex_t *fork)
+void	free_vars(t_info *info, t_philo *philo, t_fork *fork)
 {
 	if (info->count_eat != NULL)
 		free(info->count_eat);
+	if (info->list != NULL)
+		free(info->list);
+	if (info != NULL)
+		free(info);
 	if (fork != NULL)
 		free(fork);
 	if (philo != NULL)

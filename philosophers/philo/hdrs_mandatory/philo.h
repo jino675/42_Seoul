@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 20:27:48 by jiryu             #+#    #+#             */
-/*   Updated: 2023/06/24 21:10:23 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/06/28 19:50:11 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,23 @@ typedef struct s_info
 	int				is_died;
 	int				is_completed;
 	int				*count_eat;
+	int				count;
+	int				*list;
 	pthread_mutex_t	print;
+	pthread_mutex_t	check;
 	struct timeval	start_time;
 }	t_info;
+
+typedef struct s_fork
+{
+	pthread_mutex_t	mutex;
+	int				is_using;
+}	t_fork;
 
 typedef struct s_philo
 {
 	t_info			*info;
-	pthread_mutex_t	*fork;
+	t_fork			*fork;
 	int				number;
 	pthread_t		thread;
 	struct timeval	last_eat;
