@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 20:31:33 by jiryu             #+#    #+#             */
-/*   Updated: 2023/07/02 20:44:22 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/07/02 20:06:19 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../hdrs_mandatory/philo.h"
+#include "../hdrs_bonus/philo_bonus.h"
 
 size_t	ft_strlen(const char *s)
 {
@@ -48,18 +48,14 @@ int	ft_atoi(char *str)
 	return ((int) res);
 }
 
-int	free_vars(t_info *info, t_philo *philo, pthread_mutex_t *fork)
+int	free_vars(t_info *info)
 {
 	if (info != NULL)
 	{
-		if (info->count_eat != NULL)
-			free(info->count_eat);
+		if (info->pid != NULL)
+			free(info->pid);
 		free(info);
 	}
-	if (fork != NULL)
-		free(fork);
-	if (philo != NULL)
-		free(philo);
 	return (-1);
 }
 
@@ -90,6 +86,3 @@ void	my_usleep(long time)
 			return ;
 	}
 }
-
-		// if (info->list != NULL)
-		// 	free(info->list);
