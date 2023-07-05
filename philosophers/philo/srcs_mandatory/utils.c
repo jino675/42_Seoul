@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 20:31:33 by jiryu             #+#    #+#             */
-/*   Updated: 2023/07/02 20:44:22 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/07/05 16:58:58 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	ft_atoi(char *str)
 	return ((int) res);
 }
 
-int	free_vars(t_info *info, t_philo *philo, pthread_mutex_t *fork)
+int	free_vars(t_info *info, t_philo *philo, t_fork *fork)
 {
 	if (info != NULL)
 	{
@@ -76,7 +76,7 @@ long	get_diftime(struct timeval ref_time, t_philo *philo)
 	return (dif_time);
 }
 
-void	my_usleep(long time)
+int	my_usleep(t_info *info, t_philo *philo, long time)
 {
 	struct timeval	start_time;
 	long			dif_time;
@@ -84,10 +84,12 @@ void	my_usleep(long time)
 	gettimeofday(&start_time, NULL);
 	while (1)
 	{
-		usleep(SLEEP_UNIT);
 		dif_time = get_diftime(start_time, NULL);
 		if (dif_time >= time)
-			return ;
+			return (0);
+		if (info != NULL && philo != NULL && check_died(info, philo) == -1)
+			return (-1);
+		usleep(SLEEP_UNIT);
 	}
 }
 

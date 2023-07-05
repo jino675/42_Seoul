@@ -1,18 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   in_thread_2_bonus.c                                :+:      :+:    :+:   */
+/*   in_process_2_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 20:39:04 by jiryu             #+#    #+#             */
-/*   Updated: 2023/07/02 18:06:53 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/07/04 19:58:44 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hdrs_bonus/philo_bonus.h"
-
-int	check_died(t_info *info, t_philo *philo);
 
 static int	philo_take_fork(t_info *info, t_philo *philo)
 {
@@ -37,7 +35,8 @@ static int	philo_eat(t_info *info, t_philo *philo)
 	sem_wait(info->for_print);
 	printf("%10ldms \033[0;32m%3d is eating\033[0m\n", dif_time, philo->number);
 	sem_post(info->for_print);
-	my_usleep(info->time_eat);
+	if (my_usleep(info, philo, info->time_eat) == -1)
+		return (-1);
 	++philo->count_eat;
 	if (philo->count_eat == info->num_eat)
 		sem_post(info->for_count);

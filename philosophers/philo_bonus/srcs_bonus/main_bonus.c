@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 20:02:45 by jiryu             #+#    #+#             */
-/*   Updated: 2023/07/02 18:53:05 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/07/04 19:15:10 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(int ac, char **av)
 
 	if (init_vars(ac, av, &info) == -1)
 	{
-		printf("something wrong!\n");
+		printf("something is wrong!\n");
 		return (1);
 	}
 	run_philo(info, &info->philo);

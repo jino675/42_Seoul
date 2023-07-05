@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 20:36:52 by jiryu             #+#    #+#             */
-/*   Updated: 2023/07/02 22:02:04 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/07/04 19:57:29 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ int	philo_sleep(t_info *info, t_philo *philo)
 	sem_wait(info->for_print);
 	printf("%10ldms \033[0;93m%3d is sleeping\033[0m\n", dif_time, philo->number);
 	sem_post(info->for_print);
-	my_usleep(info->time_sleep);
+	if (my_usleep(info, philo, info->time_sleep) == -1)
+		return (-1);
 	return (0);
 }
 
@@ -51,6 +52,9 @@ int	philo_think(t_info *info, t_philo *philo)
 	sem_wait(info->for_print);
 	printf("%10ldms \033[0;34m%3d is thinking\033[0m\n", dif_time, philo->number);
 	sem_post(info->for_print);
+	if (info->num_philo % 2 == 1 && info->time_sleep <= info->time_eat)
+		if (my_usleep(info, philo, info->time_eat - info->time_sleep + 1) == -1)
+			return (-1);
 	return (0);
 }
 
@@ -58,9 +62,10 @@ void	in_process(t_info *info, t_philo *philo, sem_t *fork)
 {
 	while (info->num_philo == 1)
 	{
+		if (my_usleep(info, philo, info->time_die) == -1)
+			exit(0);
 		if (check_died(info, philo) == -1)
 			exit(0);
-		usleep(SLEEP_UNIT);
 	}
 	while (1)
 	{

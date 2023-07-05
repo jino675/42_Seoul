@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 17:49:45 by jiryu             #+#    #+#             */
-/*   Updated: 2023/07/02 21:10:09 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/07/05 17:48:31 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,19 +56,26 @@ static int	init_info(int ac, char **av, t_info *info)
 	return (0);
 }
 
-static int	sub_init_vars(t_info *info, t_philo **philo, pthread_mutex_t **fork)
+static int	sub_init_vars(t_info *info, t_philo **philo, t_fork **fork)
 {
+	int	i;
+
 	*philo = (t_philo *)malloc(sizeof(t_philo) * info->num_philo);
 	if (*philo == NULL)
 		return (free_vars(info, NULL, NULL));
-	*fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * \
-													info->num_philo);
+	*fork = (t_fork *)malloc(sizeof(t_fork) * info->num_philo);
 	if (*fork == NULL)
 		return (free_vars(info, *philo, NULL));
+	i = -1;
+	while (++i < info->num_philo)
+	{
+		(*fork)[i].number = i;
+		(*fork)[i].is_using = 0;
+	}
 	return (0);
 }
 
-static int	init_mutex(t_info *info, t_philo *philo, pthread_mutex_t *fork)
+static int	init_mutex(t_info *info, t_philo *philo, t_fork *fork)
 {
 	int	i;
 
@@ -82,10 +89,10 @@ static int	init_mutex(t_info *info, t_philo *philo, pthread_mutex_t *fork)
 	i = -1;
 	while (++i < info->num_philo)
 	{
-		if (pthread_mutex_init(&fork[i], NULL) != 0)
+		if (pthread_mutex_init(&fork[i].mutex, NULL) != 0)
 		{
 			while (--i > -1)
-				pthread_mutex_destroy(&fork[i]);
+				pthread_mutex_destroy(&fork[i].mutex);
 			pthread_mutex_destroy(&info->for_print);
 			pthread_mutex_destroy(&info->for_count);
 			return (free_vars(info, philo, fork));
@@ -96,9 +103,9 @@ static int	init_mutex(t_info *info, t_philo *philo, pthread_mutex_t *fork)
 
 int	init_vars(int ac, char **av, t_philo **philo)
 {
-	int				i;
-	t_info			*info;
-	pthread_mutex_t	*fork;
+	int		i;
+	t_info	*info;
+	t_fork	*fork;
 
 	if (ac < 5 || ac > 6)
 		return (-1);
@@ -117,8 +124,8 @@ int	init_vars(int ac, char **av, t_philo **philo)
 		(*philo)[i].info = info;
 		(*philo)[i].fork = fork;
 		(*philo)[i].number = i;
-		(*philo)[i].idx_1 = i + (info->num_philo * (i == 0) - 1) * (i % 2 == 0);
-		(*philo)[i].idx_2 = i + (info->num_philo * (i == 0) - 1) * (i % 2 == 1);
+		(*philo)[i].idx_1 = i + (info->num_philo * (i == 0) - 1) * (i % 2 == 1);
+		(*philo)[i].idx_2 = i + (info->num_philo * (i == 0) - 1) * (i % 2 == 0);
 	}
 	return (0);
 }

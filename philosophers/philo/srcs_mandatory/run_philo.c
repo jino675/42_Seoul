@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 18:00:02 by jiryu             #+#    #+#             */
-/*   Updated: 2023/07/02 21:58:20 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/07/05 19:12:36 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,28 @@ static void	sub_run_philo(t_info *info, t_philo *philo)
 		printf("%10dms \033[0;34m%3d is thinking\033[0m\n", 0, philo[i].number);
 	}
 	i = -1;
-	while (++i < info->num_philo / 2)
-		pthread_create(&philo[i * 2].thread, NULL, in_thread, \
-										(void *)&(philo[i * 2]));
-	my_usleep(info->time_eat / 4);
-	i = -1;
-	while (++i < info->num_philo / 2)
-		pthread_create(&philo[i * 2 + 1].thread, NULL, in_thread, \
-										(void *)&(philo[i * 2 + 1]));
-	if (info->num_philo % 2 == 1)
-		pthread_create(&philo[info->num_philo - 1].thread, NULL, in_thread, \
-									(void *)&(philo[info->num_philo - 1]));
+	while (++i < info->num_philo)
+		pthread_create(&philo[i].thread, NULL, in_thread, \
+										(void *)&(philo[i]));
+	// i = -1;
+	// while (++i < info->num_philo / 2)
+	// 	pthread_create(&philo[i * 2].thread, NULL, in_thread, \
+	// 									(void *)&(philo[i * 2]));
+	// if (info->num_philo > 1)
+	// 	my_usleep(NULL, NULL, info->time_eat / 4);
+	// i = -1;
+	// while (++i < info->num_philo / 2)
+	// 	pthread_create(&philo[i * 2 + 1].thread, NULL, in_thread, \
+	// 									(void *)&(philo[i * 2 + 1]));
+	// if (info->num_philo % 2 == 1)
+	// {
+	// 	my_usleep(NULL, NULL, info->time_eat + info->time_eat / 4);
+	// 	pthread_create(&philo[info->num_philo - 1].thread, NULL, in_thread, \
+	// 								(void *)&(philo[info->num_philo - 1]));
+	// }
 }
 
-int	run_philo(t_info *info, t_philo *philo, pthread_mutex_t *fork)
+int	run_philo(t_info *info, t_philo *philo, t_fork *fork)
 {
 	int		i;
 
@@ -49,7 +57,7 @@ int	run_philo(t_info *info, t_philo *philo, pthread_mutex_t *fork)
 		pthread_join(philo[i].thread, NULL);
 	i = -1;
 	while (++i < info->num_philo)
-		pthread_mutex_destroy(&fork[i]);
+		pthread_mutex_destroy(&fork[i].mutex);
 	pthread_mutex_destroy(&info->for_print);
 	pthread_mutex_destroy(&info->for_count);
 	return (0);

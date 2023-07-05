@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 20:27:48 by jiryu             #+#    #+#             */
-/*   Updated: 2023/07/02 18:48:04 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/07/04 19:58:51 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdio.h>
 # include <signal.h>
 # include <semaphore.h>
-# define SLEEP_UNIT 100
+# define SLEEP_UNIT 200
 
 typedef struct s_philo
 {
@@ -47,6 +47,7 @@ size_t	ft_strlen(const char *s);
 int		ft_atoi(char *str);
 int		free_vars(t_info *info);
 long	get_diftime(struct timeval ref_time, t_philo *philo);
-void	my_usleep(long time);
+int		my_usleep(t_info *info, t_philo *philo, long time);
+int		check_died(t_info *info, t_philo *philo);
 
 #endif

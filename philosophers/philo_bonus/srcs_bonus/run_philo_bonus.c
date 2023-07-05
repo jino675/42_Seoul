@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 18:00:02 by jiryu             #+#    #+#             */
-/*   Updated: 2023/07/02 22:01:11 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/07/04 19:56:58 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static void	for_error(t_info *info)
 	int		statloc;
 
 	sem_wait(info->for_print);
+	printf("something is wrong!\n");
 	i = -1;
 	while (++i < info->num_philo + (info->num_eat != -1))
 	{
@@ -51,7 +52,8 @@ static void	sub_run_philo_1(t_info *info, t_philo *philo)
 			in_process(info, philo, info->fork);
 		}
 	}
-	my_usleep(info->time_eat / 4);
+	if (info->num_philo > 1)
+		my_usleep(NULL, NULL, info->time_eat / 4);
 }
 
 static void	sub_run_philo_2(t_info *info, t_philo *philo)

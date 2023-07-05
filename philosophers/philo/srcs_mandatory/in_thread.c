@@ -6,14 +6,14 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 20:36:52 by jiryu             #+#    #+#             */
-/*   Updated: 2023/07/02 21:47:40 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/07/05 19:21:39 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hdrs_mandatory/philo.h"
 
 int	with_fork(t_info *info, t_philo *philo, \
-		pthread_mutex_t *fork_1, pthread_mutex_t *fork_2);
+		t_fork *fork_1, t_fork *fork_2);
 
 int	check_died(t_info *info, t_philo *philo)
 {
@@ -38,8 +38,6 @@ int	check_died(t_info *info, t_philo *philo)
 int	check_completed(t_info *info, t_philo *philo)
 {
 	++info->count_eat[philo->number];
-	if (info->num_eat == -1)
-		return (0);
 	if (info->count_eat[philo->number] == info->num_eat)
 	{
 		pthread_mutex_lock(&info->for_count);
@@ -75,7 +73,8 @@ int	philo_sleep(t_info *info, t_philo *philo)
 	}
 	printf("%10ldms \033[0;93m%3d is sleeping\033[0m\n", dif_time, philo->number);
 	pthread_mutex_unlock(&info->for_print);
-	my_usleep(info->time_sleep);
+	if (my_usleep(info, philo, info->time_sleep) == -1)
+		return (-1);
 	return (0);
 }
 
@@ -94,28 +93,34 @@ int	philo_think(t_info *info, t_philo *philo)
 	}
 	printf("%10ldms \033[0;34m%3d is thinking\033[0m\n", dif_time, philo->number);
 	pthread_mutex_unlock(&info->for_print);
+	if (info->num_philo % 2 == 1 && info->time_sleep <= info->time_eat)
+		if (my_usleep(info, philo, info->time_eat - info->time_sleep + 1) == -1)
+			return (-1);
 	return (0);
 }
 
 void	*in_thread(void *var)
 {
+	t_info			*info;
 	t_philo			*philo;
 
 	philo = (t_philo *)var;
-	while (philo->info->num_philo == 1)
+	info = philo->info;
+	while (info->num_philo == 1)
 	{
-		if (check_died(philo->info, philo) == -1)
+		if (my_usleep(info, philo, info->time_die) == -1)
 			return (NULL);
-		usleep(SLEEP_UNIT);
+		if (check_died(info, philo) == -1)
+			return (NULL);
 	}
 	while (1)
 	{
-		if (with_fork(philo->info, philo, &philo->fork[philo->idx_1], \
+		if (with_fork(info, philo, &philo->fork[philo->idx_1], \
 								&philo->fork[philo->idx_2]) == -1)
 			break ;
-		if (philo_sleep(philo->info, philo) == -1)
+		if (philo_sleep(info, philo) == -1)
 			break ;
-		if (philo_think(philo->info, philo) == -1)
+		if (philo_think(info, philo) == -1)
 			break ;
 	}
 	return (NULL);
