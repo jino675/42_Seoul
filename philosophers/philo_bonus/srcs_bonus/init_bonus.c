@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 17:49:45 by jiryu             #+#    #+#             */
-/*   Updated: 2023/07/02 20:52:10 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/07/08 16:55:04 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ static int	sub_init_info(int ac, char **av, t_info *info)
 	int	temp;
 
 	info->num_eat = -1;
-	info->is_end = 0;
-	info->philo.count_eat = 0;
+	info->philo.file_name = NULL;
+	info->pid = NULL;
 	i = 0;
 	while (++i < ac)
 	{
@@ -46,6 +46,12 @@ static int	init_info(int ac, char **av, t_info *info)
 
 	if (sub_init_info(ac, av, info) == -1)
 		return (free_vars(info));
+	info->time_think = -1;
+	if (info->num_philo % 2 == 1)
+		if (info->time_sleep <= info->time_eat + info->time_eat / 4)
+			info->time_think = info->time_eat - info->time_sleep + \
+													info->time_eat / 4;
+	info->philo.count_eat = 0;
 	info->pid = (int *)malloc(sizeof(int) * \
 					(info->num_philo + (info->num_eat != -1)));
 	if (info->pid == NULL)
@@ -53,6 +59,9 @@ static int	init_info(int ac, char **av, t_info *info)
 	i = -1;
 	while (++i < info->num_philo + (info->num_eat != -1))
 		info->pid[i] = 0;
+	info->philo.file_name = ft_strdup("for_eat_");
+	if (info->philo.file_name == NULL)
+		return (free_vars(info));
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 18:00:02 by jiryu             #+#    #+#             */
-/*   Updated: 2023/07/05 19:12:36 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/07/08 19:24:11 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,28 +23,19 @@ static void	sub_run_philo(t_info *info, t_philo *philo)
 	while (++i < info->num_philo)
 	{
 		philo[i].last_eat = info->start_time;
-		printf("%10dms \033[0;34m%3d is thinking\033[0m\n", 0, philo[i].number);
+		printf("%10dms \033[0;36m%3d is thinking\033[0m\n", 0, philo[i].number);
 	}
 	i = -1;
-	while (++i < info->num_philo)
-		pthread_create(&philo[i].thread, NULL, in_thread, \
-										(void *)&(philo[i]));
-	// i = -1;
-	// while (++i < info->num_philo / 2)
-	// 	pthread_create(&philo[i * 2].thread, NULL, in_thread, \
-	// 									(void *)&(philo[i * 2]));
-	// if (info->num_philo > 1)
-	// 	my_usleep(NULL, NULL, info->time_eat / 4);
-	// i = -1;
-	// while (++i < info->num_philo / 2)
-	// 	pthread_create(&philo[i * 2 + 1].thread, NULL, in_thread, \
-	// 									(void *)&(philo[i * 2 + 1]));
-	// if (info->num_philo % 2 == 1)
-	// {
-	// 	my_usleep(NULL, NULL, info->time_eat + info->time_eat / 4);
-	// 	pthread_create(&philo[info->num_philo - 1].thread, NULL, in_thread, \
-	// 								(void *)&(philo[info->num_philo - 1]));
-	// }
+	while (++i < info->num_philo / 2)
+		pthread_create(&philo[i * 2].thread, NULL, in_thread, \
+										(void *)&(philo[i * 2]));
+	i = -1;
+	while (++i < info->num_philo / 2)
+		pthread_create(&philo[i * 2 + 1].thread, NULL, in_thread, \
+										(void *)&(philo[i * 2 + 1]));
+	if (info->num_philo % 2 == 1)
+		pthread_create(&philo[info->num_philo - 1].thread, NULL, in_thread, \
+									(void *)&(philo[info->num_philo - 1]));
 }
 
 int	run_philo(t_info *info, t_philo *philo, t_fork *fork)
@@ -62,12 +53,3 @@ int	run_philo(t_info *info, t_philo *philo, t_fork *fork)
 	pthread_mutex_destroy(&info->for_count);
 	return (0);
 }
-
-// long	dif_time;
-// i = -1;
-// while (++i < info->num_philo)
-// {
-// 	dif_time = (philo[i].last_eat.tv_sec - info->start_time.tv_sec) * 1000
-// + ((long)philo[i].last_eat.tv_usec - (long)info->start_time.tv_usec) / 1000;
-// 	printf("%3d ate %d times (%ld)ms\n", i, info->count_eat[i], dif_time);
-// }

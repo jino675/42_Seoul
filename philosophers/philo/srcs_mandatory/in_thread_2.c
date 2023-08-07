@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 20:39:04 by jiryu             #+#    #+#             */
-/*   Updated: 2023/07/05 19:02:22 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/07/13 18:37:24 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,24 @@
 
 int	check_completed(t_info *info, t_philo *philo);
 
-static int	philo_take_fork(t_info *info, t_philo *philo, int idx)
+static int	philo_take_fork(t_info *info, t_philo *philo)
 {
 	long	dif_time;
 
-	if (check_died(info, philo) == -1)
-		return (-1);
-	dif_time = get_diftime(info->start_time, NULL);
 	pthread_mutex_lock(&info->for_print);
 	if (info->is_end == 1)
 	{
 		pthread_mutex_unlock(&info->for_print);
 		return (-1);
 	}
-	printf("%10ldms %3d has taken a fork (%d)\n", dif_time, philo->number, idx);
+	dif_time = get_diftime(philo->last_eat, NULL);
+	if (dif_time >= (long)info->time_die)
+	{
+		pthread_mutex_unlock(&info->for_print);
+		return (-1);
+	}
+	dif_time = get_diftime(info->start_time, NULL);
+	printf("%10ldms %3d has taken a fork\n", dif_time, philo->number);
 	pthread_mutex_unlock(&info->for_print);
 	return (0);
 }
@@ -36,15 +40,19 @@ static int	philo_eat(t_info *info, t_philo *philo)
 {
 	long	dif_time;
 
-	if (check_died(info, philo) == -1)
-		return (-1);
-	dif_time = get_diftime(info->start_time, philo);
 	pthread_mutex_lock(&info->for_print);
 	if (info->is_end == 1)
 	{
 		pthread_mutex_unlock(&info->for_print);
 		return (-1);
 	}
+	dif_time = get_diftime(philo->last_eat, NULL);
+	if (dif_time >= (long)info->time_die)
+	{
+		pthread_mutex_unlock(&info->for_print);
+		return (-1);
+	}
+	dif_time = get_diftime(info->start_time, philo);
 	printf("%10ldms \033[0;32m%3d is eating\033[0m\n", dif_time, philo->number);
 	pthread_mutex_unlock(&info->for_print);
 	if (my_usleep(info, philo, info->time_eat) == -1)
@@ -57,6 +65,8 @@ static int	philo_eat(t_info *info, t_philo *philo)
 
 static int	wait_fork(t_info *info, t_philo *philo, t_fork *fork)
 {
+	long	dif_time;
+
 	while (1)
 	{
 		pthread_mutex_lock(&fork->mutex);
@@ -67,7 +77,8 @@ static int	wait_fork(t_info *info, t_philo *philo, t_fork *fork)
 			return (0);
 		}
 		pthread_mutex_unlock(&fork->mutex);
-		if (check_died(info, philo) == -1)
+		dif_time = get_diftime(philo->last_eat, NULL);
+		if (dif_time >= (long)info->time_die)
 			return (-1);
 		usleep(SLEEP_UNIT);
 	}
@@ -93,14 +104,17 @@ int	with_fork(t_info *info, t_philo *philo, t_fork *fork_1, t_fork *fork_2)
 {
 	if (wait_fork(info, philo, fork_1) == -1)
 		return (-1);
-	if (philo_take_fork(info, philo, fork_1->number) == -1)
+	if (philo_take_fork(info, philo) == -1)
 	{
 		after_fork(fork_1, NULL);
 		return (-1);
 	}
 	if (wait_fork(info, philo, fork_2) == -1)
+	{
+		after_fork(fork_1, NULL);
 		return (-1);
-	if (philo_take_fork(info, philo, fork_2->number) == -1)
+	}
+	if (philo_take_fork(info, philo) == -1)
 	{
 		after_fork(fork_1, fork_2);
 		return (-1);
@@ -113,23 +127,3 @@ int	with_fork(t_info *info, t_philo *philo, t_fork *fork_1, t_fork *fork_2)
 	after_fork(fork_1, fork_2);
 	return (0);
 }
-
-	// if (info->list[philo->number] != 1)
-	// 	wait_eating(info, philo);
-	// info->list[philo->number] = 2;
-
-// static void	wait_eating(t_info *info, t_philo *philo)
-// {
-// 	while (1)
-// 	{
-// 		if (info->is_end == 1)
-// 			return ;
-// 		if (info->list[philo->left] == 2)
-// 		{
-// 			info->list[philo->left] = 0;
-// 			info->list[philo->number] = 1;
-// 			return ;
-// 		}
-// 		usleep(SLEEP_UNIT);
-// 	}
-// }

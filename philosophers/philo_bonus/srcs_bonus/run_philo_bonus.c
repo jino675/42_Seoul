@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 18:00:02 by jiryu             #+#    #+#             */
-/*   Updated: 2023/07/04 19:56:58 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/07/13 16:58:50 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,13 @@ static void	for_error(t_info *info)
 	exit(1);
 }
 
-static void	sub_run_philo_1(t_info *info, t_philo *philo)
+static void	sub_run_philo_1(t_info *info, t_philo *philo, int i)
 {
-	int		i;
-
 	gettimeofday(&(info->start_time), NULL);
 	philo->last_eat = info->start_time;
 	i = -1;
 	while (++i < info->num_philo)
-		printf("%10dms \033[0;34m%3d is thinking\033[0m\n", 0, i);
+		printf("%10dms \033[0;36m%3d is thinking\033[0m\n", 0, i);
 	i = -1;
 	while (++i < info->num_philo / 2)
 	{
@@ -52,14 +50,10 @@ static void	sub_run_philo_1(t_info *info, t_philo *philo)
 			in_process(info, philo, info->fork);
 		}
 	}
-	if (info->num_philo > 1)
-		my_usleep(NULL, NULL, info->time_eat / 4);
 }
 
-static void	sub_run_philo_2(t_info *info, t_philo *philo)
+static void	sub_run_philo_2(t_info *info, t_philo *philo, int i)
 {
-	int		i;
-
 	i = -1;
 	while (++i < info->num_philo / 2)
 	{
@@ -108,8 +102,8 @@ int	run_philo(t_info *info, t_philo *philo)
 	int		i;
 	int		statloc;
 
-	sub_run_philo_1(info, philo);
-	sub_run_philo_2(info, philo);
+	sub_run_philo_1(info, philo, 0);
+	sub_run_philo_2(info, philo, 0);
 	if (info->num_eat != -1)
 		check_completed(info);
 	waitpid(0, &statloc, 0);

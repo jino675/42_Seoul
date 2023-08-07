@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 20:31:33 by jiryu             #+#    #+#             */
-/*   Updated: 2023/07/05 16:58:58 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/07/13 18:50:09 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,14 +84,15 @@ int	my_usleep(t_info *info, t_philo *philo, long time)
 	gettimeofday(&start_time, NULL);
 	while (1)
 	{
+		usleep(SLEEP_UNIT);
+		if (info != NULL && philo != NULL)
+		{
+			dif_time = get_diftime(philo->last_eat, NULL);
+			if (dif_time >= (long)info->time_die)
+				return (-1);
+		}
 		dif_time = get_diftime(start_time, NULL);
 		if (dif_time >= time)
 			return (0);
-		if (info != NULL && philo != NULL && check_died(info, philo) == -1)
-			return (-1);
-		usleep(SLEEP_UNIT);
 	}
 }
-
-		// if (info->list != NULL)
-		// 	free(info->list);

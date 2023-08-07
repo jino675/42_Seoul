@@ -6,7 +6,7 @@
 #    By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/16 20:23:42 by jiryu             #+#    #+#              #
-#    Updated: 2023/07/04 20:05:46 by jiryu            ###   ########.fr        #
+#    Updated: 2023/07/08 17:28:42 by jiryu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,9 @@ SRCS_BONUS = main_bonus.c				\
 				run_philo_bonus.c		\
 				in_process_bonus.c		\
 				in_process_2_bonus.c	\
-				utils_bonus.c
+				utils_bonus_1.c			\
+				utils_bonus_2.c			\
+				utils_bonus_3.c
 
 OBJS_BONUS = $(addprefix $(DIR_SRCS_BONUS), $(SRCS_BONUS:.c=.o))
 

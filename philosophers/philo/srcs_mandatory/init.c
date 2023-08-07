@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 17:49:45 by jiryu             #+#    #+#             */
-/*   Updated: 2023/07/05 17:48:31 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/07/08 19:40:17 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ static int	sub_init_info(int ac, char **av, t_info *info)
 	int	temp;
 
 	info->num_eat = -1;
-	info->is_end = 0;
-	info->count = 0;
+	info->time_think = -1;
 	info->count_eat = NULL;
 	i = 0;
 	while (++i < ac)
@@ -47,6 +46,12 @@ static int	init_info(int ac, char **av, t_info *info)
 
 	if (sub_init_info(ac, av, info) == -1)
 		return (free_vars(info, NULL, NULL));
+	if (info->num_philo % 2 == 1)
+		if (info->time_sleep <= info->time_eat + info->time_eat / 4)
+			info->time_think = info->time_eat - info->time_sleep + \
+													info->time_eat / 4;
+	info->is_end = 0;
+	info->count = 0;
 	info->count_eat = (int *)malloc(sizeof(int) * info->num_philo);
 	if (info->count_eat == NULL)
 		return (free_vars(info, NULL, NULL));
@@ -68,10 +73,7 @@ static int	sub_init_vars(t_info *info, t_philo **philo, t_fork **fork)
 		return (free_vars(info, *philo, NULL));
 	i = -1;
 	while (++i < info->num_philo)
-	{
-		(*fork)[i].number = i;
 		(*fork)[i].is_using = 0;
-	}
 	return (0);
 }
 
@@ -129,14 +131,3 @@ int	init_vars(int ac, char **av, t_philo **philo)
 	}
 	return (0);
 }
-
-	// info->list = (int *)malloc(sizeof(int) * (info->num_philo));
-	// if (info->list == NULL)
-	// {
-	// 	free_vars(info, NULL, NULL);
-	// 	return (-1);
-	// }
-		// if (i % 2 == 0 && i != info->num_philo - 1)
-		// 	info->list[i] = 1;
-		// else
-		// 	info->list[i] = 0;

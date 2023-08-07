@@ -35,7 +35,18 @@
 		"__mutex_base": "c",
 		"__locale": "c",
 		"philo_bonus.h": "c",
-		"unistd.h": "c"
+		"unistd.h": "c",
+		"stdlib.h": "c",
+		"iostream": "cpp",
+		"list": "cpp",
+		"iosfwd": "cpp",
+		"algorithm": "cpp",
+		"sstream": "cpp",
+		"map": "cpp",
+		"stack": "cpp",
+		"typeinfo": "cpp",
+		"deque": "cpp",
+		"functional": "cpp"
 	},
 	"C_Cpp.errorSquiggles": "disabled"
 }
