@@ -14,3 +14,7 @@ ___
 7. Pipex  (쉘에서 파이프의 동작을 직접 구현)
 8. Philosophers  (Dijkstra의 식사하는 철학자 문제를 응용한 과제)
 
+___
+
+<img alt="스크린샷 2023-08-29 오전 12 28 33" width="80%" src="https://user-images.githubusercontent.com/66165015/263749073-e7a170a9-0304-4471-bf84-7d02b4195369.png">
+
