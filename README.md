@@ -16,5 +16,10 @@ ___
 
 ___
 
-<img alt="스크린샷 2023-08-29 오전 12 28 33" width="80%" src="https://user-images.githubusercontent.com/66165015/263749073-e7a170a9-0304-4471-bf84-7d02b4195369.png">
+<img width="80%" src="https://user-images.githubusercontent.com/66165015/263749073-e7a170a9-0304-4471-bf84-7d02b4195369.png">
 
+<img width="80%" src="https://user-images.githubusercontent.com/66165015/264245058-fd50161a-3ffe-4d73-b48a-55a840c16e4b.gif">
+
+<img width="80%" src="https://user-images.githubusercontent.com/66165015/264247593-d4039415-505a-415a-bae0-91f0230322e0.gif">
+
+<img width="80%" src="https://user-images.githubusercontent.com/66165015/264249188-95b7fa21-a195-4f05-94a6-a78f4159b3ae.gif">
