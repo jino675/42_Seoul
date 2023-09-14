@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 14:09:57 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/11 19:23:52 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/13 20:22:29 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	free_strs(char **strs)
 	free(strs);
 }
 
-char	**ft_strdup_arr(char **strs)
+char	**strdup_arr(char **strs)
 {
 	int		i;
 	char	**res;
@@ -73,6 +73,6 @@ int	print_error(int code, t_info *info)
 		ft_putstr_fd("infile: No such file or directory\n", STDERR_FILENO);
 	else if (code == 8)
 		ft_putendl_fd("Path does not exist", STDERR_FILENO);
-	reset_info(info);
+	restart_minishell(info);
 	return (EXIT_FAILURE);
 }

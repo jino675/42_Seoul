@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 22:29:40 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/11 22:33:51 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/14 22:27:41 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,14 @@
 
 int	my_env(t_info *info, t_cmd *cmd)
 {
-	info = NULL;
-	cmd = NULL;
-	return (0);
+	int		i;
+
+	(void) cmd;
+	i = 0;
+	while (info->ev[i])
+	{
+		ft_putendl_fd(info->ev[i], STDOUT_FILENO);
+		i++;
+	}
+	return (EXIT_SUCCESS);
 }

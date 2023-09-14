@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize_2.c                                       :+:      :+:    :+:   */
+/*   chunk_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 18:09:31 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/11 19:19:55 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/13 20:13:40 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,39 +37,42 @@ static int	skip_quotes(char *str, char del)
 	return (i);
 }
 
-static int	read_words(char *str, t_chunk **chunk_list)
+static int	add_words(char *str, t_chunk **chunk_list)
 {
 	int	i;
+	int	skip_cnt;
 
 	i = 0;
-	while (str[i] != '\0' && check_token(str[i]) == 0)
+	while (str[i] != '\0' && what_token(str[i]) == 0)
 	{
-		i += skip_quotes(&str[i], '\'');
-		i += skip_quotes(&str[i], '\"');
 		if (str[i] == ' ' || (str[i] > 8 && str[i] < 14))
 			break ;
+		skip_cnt = skip_quotes(&str[i], '\'');
+		skip_cnt += skip_quotes(&str[i], '\"');
+		if (skip_cnt == 0)
+			++i;
 		else
-			i++;
+			i += skip_cnt;
 	}
 	if (make_new_chunk(ft_substr(str, 0, i), 0, chunk_list) == 0)
 		return (-1);
 	return (i);
 }
 
-int	read_token(t_info *info)
+int	make_chunks(t_info *info)
 {
 	int	i;
 	int	ret;
 
 	i = 0;
 	ret = 0;
-	while (info->args[i] != '\0')
+	while (info->line[i] != '\0')
 	{
-		i += count_white_spaces(&info->args[i]);
-		if (check_token(info->args[i]) != 0)
-			ret = add_token(&info->args[i], &info->chunk_list);
+		i += count_white_spaces(&info->line[i]);
+		if (what_token(info->line[i]) != 0)
+			ret = add_token(&info->line[i], &info->chunk_list);
 		else
-			ret = read_words(&info->args[i], &info->chunk_list);
+			ret = add_words(&info->line[i], &info->chunk_list);
 		if (ret < 0)
 			return (0);
 		i += ret;

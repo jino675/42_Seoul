@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_2.c                                          :+:      :+:    :+:   */
+/*   cmd_2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 20:40:14 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/11 20:40:28 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/13 20:06:35 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ static void	free_chunk(t_chunk **chunk_addr)
 	*chunk_addr = NULL;
 }
 
-static void	sub_chunk_list_erase(t_chunk **list, int key)
+static void	sub_chunk_list_erase(t_chunk **chunk_list_addr, int key)
 {
 	t_chunk	*cur_chunk;
 	t_chunk	*pre_chunk;
 
-	cur_chunk = *list;
+	cur_chunk = *chunk_list_addr;
 	while (cur_chunk != NULL && cur_chunk->idx != key)
 	{
 		pre_chunk = cur_chunk;
@@ -43,19 +43,37 @@ static void	sub_chunk_list_erase(t_chunk **list, int key)
 	free_chunk(&cur_chunk);
 }
 
-void	chunk_list_erase(t_chunk **list, int key)
+void	chunk_list_erase(t_chunk **chunk_list_addr, int key)
 {
-	t_chunk	*start;
+	t_chunk	*first_chunk;
 
-	start = *list;
-	if (start->idx == key)
+	first_chunk = *chunk_list_addr;
+	if (first_chunk->idx == key)
 	{
-		*list = start->next;
-		if (*list != NULL)
-			(*list)->prev = NULL;
-		free_chunk(&start);
+		*chunk_list_addr = first_chunk->next;
+		if (*chunk_list_addr != NULL)
+			(*chunk_list_addr)->prev = NULL;
+		free_chunk(&first_chunk);
 		return ;
 	}
-	sub_chunk_list_erase(list, key);
-	*list = start;
+	sub_chunk_list_erase(chunk_list_addr, key);
+}
+
+void	chunk_list_clear(t_chunk **chunk_list_addr)
+{
+	t_chunk	*cur_chunk;
+	t_chunk	*next_chunk;
+
+	cur_chunk = *chunk_list_addr;
+	if (cur_chunk == NULL)
+		return ;
+	while (cur_chunk != NULL)
+	{
+		next_chunk = cur_chunk->next;
+		if (cur_chunk->str != NULL)
+			free(cur_chunk->str);
+		free(cur_chunk);
+		cur_chunk = next_chunk;
+	}
+	*chunk_list_addr = NULL;
 }

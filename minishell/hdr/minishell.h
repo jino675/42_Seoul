@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 13:24:56 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/11 22:31:51 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/14 22:06:08 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct s_chunk
 
 typedef struct s_info
 {
-	char			*args;
+	char			*line;
 	char			**paths;
 	char			**ev;
 	t_cmd			*cmds;
@@ -54,7 +54,7 @@ typedef struct s_info
 	char			*pwd;
 	char			*o_pwd;
 	int				pipes;
-	int				*pid;
+	int				*pids;
 	bool			heredoc;
 	bool			reset;
 }	t_info;
@@ -89,30 +89,55 @@ typedef struct s_global
 t_global				g_global;
 
 void			initialize(t_info *info, char **ev);
-int				minishell(t_info *info);
-int				reset_info(t_info *info);
-void			free_strs(char **strs);
-t_chunk			*chunk_new(char *str, int token);
-void			chunk_list_push(t_chunk **list, t_chunk *new_chunk);
 int				init_info_global(t_info *info);
-char			**ft_strdup_arr(char **strs);
+
+int				minishell(t_info *info);
+int				restart_minishell(t_info *info);
+
+void			free_strs(char **strs);
+char			**strdup_arr(char **strs);
 int				print_error(int code, t_info *info);
+
 int				check_quotes(char *line);
-int				read_token(t_info *info);
-int				add_token(char *str, t_chunk **chunk_list);
-t_token			check_token(char c);
-int				make_new_chunk(char *str, t_token token, t_chunk **chunk_list);
-void			chunk_list_erase(t_chunk **list, int key);
-t_parse_info	init_parse_info(t_chunk *chunk_list, t_info *info);
-t_cmd			*init_cmd(t_parse_info *parse_info);
-void			chunk_list_clear(t_chunk **list);
+int				make_chunks(t_info *info);
+int				add_token(char *str, t_chunk **chunk_list_addr);
+t_token			what_token(char c);
+int				make_new_chunk(char *str, t_token token, \
+													t_chunk **chunk_list_addr);
+void			chunk_list_push(t_chunk **chunk_list_addr, t_chunk *new_chunk);
+t_chunk			*chunk_new(char *str, int token);
+
+int				make_cmds(t_info *info);
+void			chunk_list_clear(t_chunk **chunk_list_addr);
+void			chunk_list_erase(t_chunk **chunk_list_addr, int key);
 int				print_token_error(t_info *info, t_chunk *chunk_list, \
 															t_token token);
+t_cmd			*init_cmd(t_parse_info *parse_info);
 t_cmd			*cmd_new(char **strs, int num_redirs, t_chunk *redirs);
-void			cmd_list_push(t_cmd **list, t_cmd *new_cmd);
+void			cmd_list_push(t_cmd **cmd_list_addr, t_cmd *new_cmd);
 void			chunk_clear_print_error(int code, t_info *info, \
 														t_chunk *chunk_list);
-int				make_cmds(t_info *info);
+
+void			dollar_all(t_info *info, char **str_addr);
+char			*delete_quotes(char *str, char c);
+char			**expander(t_info *info, char **strs);
+char			*expander_str(t_info *info, char *str);
+int				dollar_general(t_info *info, char **str_addr, int cur_idx);
+
+void			single_cmd(t_cmd *cmd, t_info *info);
+int				execute(t_info *info);
+int				check_fd_heredoc(t_info *info, int end[2], t_cmd *cmd);
+int				send_heredoc(t_info *info, t_cmd *cmd);
+int				check_redirections(t_cmd *cmd);
+void			handle_cmd(t_cmd *cmd, t_info *info);
+int				find_cmd(t_cmd *cmd, t_info *info);
+t_cmd			*get_first_cmd(t_cmd *map);
+int				ft_fork(t_info *info, int end[2], int fd_in, t_cmd *cmd);
+int				pipe_wait(int *pid, int amount);
+
+
+void			init_signals(void);
+void			sig_quit(int signal);
 
 int				my_echo(t_info *info, t_cmd *cmd);
 int				my_cd(t_info *info, t_cmd *cmd);

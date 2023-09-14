@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 22:29:44 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/11 22:33:56 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/14 22:31:57 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	my_pwd(t_info *info, t_cmd *cmd)
 {
-	info = NULL;
-	cmd = NULL;
-	return (0);
+	(void) cmd;
+	ft_putendl_fd(info->pwd, STDOUT_FILENO);
+	return (EXIT_SUCCESS);
 }

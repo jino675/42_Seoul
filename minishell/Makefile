@@ -6,37 +6,46 @@
 #    By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/11 16:14:19 by jiryu             #+#    #+#              #
-#    Updated: 2023/09/11 22:32:42 by jiryu            ###   ########.fr        #
+#    Updated: 2023/09/14 16:13:37 by jiryu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRCS = src/main.c						\
-		src/initializer/initialize.c	\
+		src/init/init.c					\
 		src/utils/utils_1.c				\
-		src/minishell.c					\
-		src/tokenizer/tokenize_1.c		\
-		src/tokenizer/tokenize_2.c		\
-		src/tokenizer/tokenize_3.c		\
-		src/parser/parse_1.c			\
-		src/parser/parse_2.c			\
-		src/parser/parse_3.c			\
-		src/parser/parse_4.c			\
+		src/minishell/minishell.c		\
+		src/chunk/chunk_1.c				\
+		src/chunk/chunk_2.c				\
+		src/chunk/chunk_3.c				\
+		src/cmd/cmd_1.c					\
+		src/cmd/cmd_2.c					\
+		src/cmd/cmd_3.c					\
+		src/cmd/cmd_4.c					\
 		src/builtin/my_echo.c			\
 		src/builtin/my_cd.c				\
 		src/builtin/my_env.c			\
 		src/builtin/my_exit.c			\
 		src/builtin/my_pwd.c			\
 		src/builtin/my_unset.c			\
-		src/builtin/my_export.c
+		src/builtin/my_export.c			\
+		src/signal/signal.c				\
+		src/execute/execute_1.c			\
+		src/execute/execute_2.c			\
+		src/execute/execute_3.c			\
+		src/execute/execute_4.c			\
+		src/execute/execute_5.c			\
+		src/dollar/dollar_1.c			\
+		src/dollar/dollar_2.c			\
+		src/dollar/dollar_3.c
 		
 OBJS = $(SRCS:.c=.o)
 
 HDRS = hdr/minishell.h
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 
 RM = rm -f
 

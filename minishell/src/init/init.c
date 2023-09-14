@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   initialize.c                                       :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 14:12:31 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/11 17:34:45 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/14 15:54:05 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char	*sub_find_paths(char **ev)
 
 	i = -1;
 	while (ev[++i] != NULL)
-		if (!ft_strncmp(ev[i], "PATH=", 5))
+		if (ft_strncmp(ev[i], "PATH=", 5) == 0)
 			return (ft_substr(ev[i], 5, ft_strlen(ev[i]) - 5));
 	return (ft_strdup("\0"));
 }
@@ -62,19 +62,19 @@ int	init_info_global(t_info *info)
 	info->cmds = NULL;
 	info->chunk_list = NULL;
 	info->reset = false;
-	info->pid = NULL;
+	info->pids = NULL;
 	info->heredoc = false;
 	g_global.stop_heredoc = 0;
 	g_global.in_cmd = 0;
 	g_global.in_heredoc = 0;
 	find_paths(info);
-	// init_signals();
+	init_signals();
 	return (1);
 }
 
 void	initialize(t_info *info, char **ev)
 {
-	info->ev = ft_strdup_arr(ev);
+	info->ev = strdup_arr(ev);
 	check_pwd(info);
 	init_info_global(info);
 	printf("\nWellcome to Minishell!\n\n");

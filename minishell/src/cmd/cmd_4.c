@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_4.c                                          :+:      :+:    :+:   */
+/*   cmd_4.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 22:08:30 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/11 22:21:40 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/13 19:53:48 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,18 @@ static int	(*builtin_arr(char *str))(t_info *info, t_cmd *cmd)
 	{
 		if (ft_strncmp(str, "echo", ft_strlen("echo")) == 0)
 			return (my_echo);
-		else if (ft_strncmp(str, "echo", ft_strlen("echo")) == 0)
-			return (my_cd);
-		else if (ft_strncmp(str, "echo", ft_strlen("echo")) == 0)
-			return (my_pwd);
-		else if (ft_strncmp(str, "echo", ft_strlen("echo")) == 0)
-			return (my_export);
-		else if (ft_strncmp(str, "echo", ft_strlen("echo")) == 0)
-			return (my_unset);
-		else if (ft_strncmp(str, "echo", ft_strlen("echo")) == 0)
+		else if (ft_strncmp(str, "env", ft_strlen("env")) == 0)
 			return (my_env);
-		else if (ft_strncmp(str, "echo", ft_strlen("echo")) == 0)
+		else if (ft_strncmp(str, "exit", ft_strlen("exit")) == 0)
 			return (my_exit);
+		else if (ft_strncmp(str, "export", ft_strlen("export")) == 0)
+			return (my_export);
+		else if (ft_strncmp(str, "cd", ft_strlen("cd")) == 0)
+			return (my_cd);
+		else if (ft_strncmp(str, "pwd", ft_strlen("pwd")) == 0)
+			return (my_pwd);
+		else if (ft_strncmp(str, "unset", ft_strlen("unset")) == 0)
+			return (my_unset);
 	}
 	return (NULL);
 }
@@ -40,7 +40,7 @@ t_cmd	*cmd_new(char **strs, int num_redirs, t_chunk *redirs)
 
 	new_cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	if (new_cmd == NULL)
-		return (0);
+		return (NULL);
 	new_cmd->strs = strs;
 	new_cmd->builtin = builtin_arr(strs[0]);
 	new_cmd->hd_file_name = NULL;
@@ -57,14 +57,14 @@ void	chunk_clear_print_error(int code, t_info *info, t_chunk *chunk_list)
 	print_error(code, info);
 }
 
-void	cmd_list_push(t_cmd **list, t_cmd *new_cmd)
+void	cmd_list_push(t_cmd **cmd_list_addr, t_cmd *new_cmd)
 {
 	t_cmd	*cur_cmd;
 
-	cur_cmd = *list;
-	if (*list == NULL)
+	cur_cmd = *cmd_list_addr;
+	if (cur_cmd == NULL)
 	{
-		*list = new_cmd;
+		*cmd_list_addr = new_cmd;
 		return ;
 	}
 	while (cur_cmd->next != NULL)

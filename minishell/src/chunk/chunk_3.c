@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 18:33:28 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/11 21:40:15 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/13 18:09:21 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,31 +30,20 @@ t_chunk	*chunk_new(char *str, int token)
 	return (new_chunk);
 }
 
-void	chunk_list_push(t_chunk **list, t_chunk *new_chunk)
+void	chunk_list_push(t_chunk **chunk_list_addr, t_chunk *new_chunk)
 {
-	t_chunk	*temp;
+	t_chunk	*cur_chunk;
 
-	temp = *list;
-	if (*list == NULL)
+	cur_chunk = *chunk_list_addr;
+	if (cur_chunk == NULL)
 	{
-		*list = new_chunk;
+		*chunk_list_addr = new_chunk;
 		return ;
 	}
-	while (temp->next != NULL)
-		temp = temp->next;
-	temp->next = new_chunk;
-	new_chunk->prev = temp;
-}
-
-t_token	check_token(char c)
-{
-	if (c == '|')
-		return (PIPE);
-	else if (c == '>')
-		return (OUT);
-	else if (c == '<')
-		return (IN);
-	return (0);
+	while (cur_chunk->next != NULL)
+		cur_chunk = cur_chunk->next;
+	cur_chunk->next = new_chunk;
+	new_chunk->prev = cur_chunk;
 }
 
 int	make_new_chunk(char *str, t_token token, t_chunk **chunk_list)
@@ -68,26 +57,37 @@ int	make_new_chunk(char *str, t_token token, t_chunk **chunk_list)
 	return (1);
 }
 
+t_token	what_token(char c)
+{
+	if (c == '|')
+		return (PIPE);
+	else if (c == '>')
+		return (OUT);
+	else if (c == '<')
+		return (IN);
+	return (0);
+}
+
 int	add_token(char *str, t_chunk **chunk_list)
 {
-	t_token	token;
+	t_token	cur_token;
 
-	token = check_token(str[0]);
-	if (token == OUT && check_token(str[1]) == OUT)
+	cur_token = what_token(str[0]);
+	if (cur_token == OUT && what_token(str[1]) == OUT)
 	{
 		if (make_new_chunk(NULL, D_OUT, chunk_list) == 0)
 			return (-1);
 		return (2);
 	}
-	else if (token == IN && check_token(str[1]) == IN)
+	else if (cur_token == IN && what_token(str[1]) == IN)
 	{
 		if (make_new_chunk(NULL, D_IN, chunk_list) == 0)
 			return (-1);
 		return (2);
 	}
-	else if (token != 0)
+	else if (cur_token != 0)
 	{
-		if (make_new_chunk(NULL, token, chunk_list) == 0)
+		if (make_new_chunk(NULL, cur_token, chunk_list) == 0)
 			return (-1);
 		return (1);
 	}	
