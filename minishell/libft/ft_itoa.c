@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 10:26:38 by jiryu             #+#    #+#             */
-/*   Updated: 2023/05/13 22:24:49 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/22 16:04:48 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static char	*sub_exception(int n)
 		size = 12;
 	else
 		size = 2;
-	res = (char *)malloc(sizeof(char) * size);
+	res = (char *)ft_malloc(sizeof(char) * size);
 	if (res == NULL)
 		return (NULL);
 	if (n == -2147483648)
@@ -37,7 +37,7 @@ static char	*sub_itoa(char *temp, int size, int flag)
 	int		j;
 	char	*res;
 
-	res = (char *)malloc(sizeof(char) * (size + flag + 1));
+	res = (char *)ft_malloc(sizeof(char) * (size + flag + 1));
 	if (res == NULL)
 		return (NULL);
 	i = 0;

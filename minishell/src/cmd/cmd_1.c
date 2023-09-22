@@ -6,12 +6,14 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 19:26:48 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/13 20:24:15 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/22 20:25:49 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+t_cmd	*init_cmd(t_parse_info *parse_info);
+void	cmd_list_push(t_cmd **cmd_list_addr, t_cmd *new_cmd);
 
 static void	get_pipe_cnt(t_chunk *chunk_list, t_info *info)
 {
@@ -72,14 +74,14 @@ int	make_cmds(t_info *info)
 	{
 		if (info->chunk_list->token == PIPE)
 			chunk_list_erase(&info->chunk_list, info->chunk_list->idx);
-		if (check_empty_list(info) != 0)
+		if (check_empty_list(info) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
-		if (check_double_pipe(info, info->chunk_list->token) != 0)
+		if (check_double_pipe(info, info->chunk_list->token) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 		parse_info = init_parse_info(info->chunk_list, info);
 		new_cmd = init_cmd(&parse_info);
-		if (new_cmd == NULL)
-			chunk_clear_print_error(0, info, parse_info.chunk_list);
+		// if (new_cmd == NULL)
+		// 	chunk_clear_print_error(0, info, parse_info.chunk_list);
 		cmd_list_push(&info->cmds, new_cmd);
 		info->chunk_list = parse_info.chunk_list;
 	}

@@ -6,19 +6,22 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 22:29:36 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/14 22:34:37 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/22 20:25:06 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	print_lines(int i, char **str, int out)
+static void	print_lines(char **strs)
 {
-	while (str[i])
+	int	i;
+
+	i = -1;
+	while (strs[++i] != NULL)
 	{
-		ft_putstr_fd(str[i++], out);
-		if (str[i])
-			ft_putchar_fd(' ', out);
+		ft_putstr_fd(strs[i], STDOUT_FILENO);
+		if (strs[i + 1] != NULL)
+			ft_putchar_fd(' ', STDOUT_FILENO);
 	}
 }
 
@@ -26,24 +29,24 @@ int	my_echo(t_info *info, t_cmd *cmd)
 {
 	int		i;
 	int		j;
+	char	**strs;
 	bool	n_option;
 
-	i = 1;
+	info = NULL;
+	strs = cmd->strs;
 	n_option = false;
-	(void) info;
-	while (cmd->strs[i] && cmd->strs[i][0] == '-'
-		&& cmd->strs[i][1] == 'n')
+	i = 0;
+	while (strs[++i] != NULL && strs[i][0] == '-' && strs[i][1] == 'n')
 	{
 		j = 1;
-		while (cmd->strs[i][j] == 'n')
-			j++;
-		if (cmd->strs[i][j] == '\0')
+		while (strs[i][j] == 'n')
+			++j;
+		if (strs[i][j] == '\0')
 			n_option = true;
 		else
 			break ;
-		i++;
 	}
-	print_lines(i, cmd->strs, STDOUT_FILENO);
+	print_lines(&strs[i]);
 	if (n_option == false)
 		ft_putchar_fd('\n', STDOUT_FILENO);
 	return (EXIT_SUCCESS);

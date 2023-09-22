@@ -6,109 +6,66 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 21:08:17 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/14 16:05:04 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/22 17:47:36 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	create_heredoc(t_chunk *heredoc, bool quotes, t_info *info, \
-															char *file_name)
+static int	get_input(t_info *info, t_chunk *heredoc, char *file_name)
 {
 	int		fd;
 	char	*line;
 
+	g_in_heredoc = 1;
 	fd = open(file_name, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	line = readline("> ");
-	while (line && ft_strncmp(heredoc->str, line, ft_strlen(heredoc->str))
-		&& !g_global.stop_heredoc)
+	while (line != NULL && ft_strcmp(heredoc->str, line) != 0 && \
+										g_in_heredoc == 1)
 	{
-		if (quotes == false)
-			line = expander_str(info, line);
-		write(fd, line, ft_strlen(line));
-		write(fd, "\n", 1);
+		ft_putendl_fd(line, fd);
 		free(line);
 		line = readline("> ");
 	}
 	free(line);
-	if (g_global.stop_heredoc || !line)
-		return (EXIT_FAILURE);
 	close(fd);
+	if (g_in_heredoc == 0)
+		return (EXIT_FAILURE);
+	g_in_heredoc = 0;
+	info->heredoc = true;
 	return (EXIT_SUCCESS);
 }
 
-static int	ft_heredoc(t_info *info, t_chunk *heredoc, char *file_name)
+static char	*get_filename(void)
 {
-	bool	quotes;
-	int		sl;
-
-	sl = EXIT_SUCCESS;
-	if ((heredoc->str[0] == '\"'
-			&& heredoc->str[ft_strlen(heredoc->str) - 1] == '\"')
-		|| (heredoc->str[0] == '\''
-			&& heredoc->str[ft_strlen(heredoc->str) - 1] == '\''))
-		quotes = true;
-	else
-		quotes = false;
-	delete_quotes(heredoc->str, '\"');
-	delete_quotes(heredoc->str, '\'');
-	g_global.stop_heredoc = 0;
-	g_global.in_heredoc = 1;
-	sl = create_heredoc(heredoc, quotes, info, file_name);
-	g_global.in_heredoc = 0;
-	info->heredoc = true;
-	return (sl);
-}
-
-static char	*generate_heredoc_filename(void)
-{
-	static int	i = 0;
-	char		*num;
+	static int	i;
+	char		*nbr;
 	char		*file_name;
 
-	num = ft_itoa(i++);
-	file_name = ft_strjoin("build/.tmp_heredoc_file_", num);
-	free(num);
+	nbr = ft_itoa(i++);
+	file_name = ft_strdup(".tmp_heredoc_file_");
+	ft_strattach(&file_name, nbr);
+	free(nbr);
 	return (file_name);
 }
 
-int	check_fd_heredoc(t_info *info, int end[2], t_cmd *cmd)
+int	set_heredoc(t_info *info, t_cmd *cmd)
 {
-	int	fd_in;
+	t_chunk	*cur_redirs;
 
-	if (info->heredoc)
+	cur_redirs = cmd->redirs;
+	while (cur_redirs != NULL)
 	{
-		close(end[0]);
-		fd_in = open(cmd->hd_file_name, O_RDONLY);
-	}
-	else
-		fd_in = end[0];
-	return (fd_in);
-}
-
-int	send_heredoc(t_info *info, t_cmd *cmd)
-{
-	int		sl;
-	t_chunk	*start;
-
-	start = cmd->redirs;
-	sl = EXIT_SUCCESS;
-	while (cmd->redirs)
-	{
-		if (cmd->redirs->token == D_IN)
+		if (cur_redirs->token == D_IN)
 		{
-			if (cmd->hd_file_name)
-				free(cmd->hd_file_name);
-			cmd->hd_file_name = generate_heredoc_filename();
-			sl = ft_heredoc(info, cmd->redirs, cmd->hd_file_name);
-			if (sl)
+			cmd->hd_file_name = get_filename();
+			if (get_input(info, cur_redirs, cmd->hd_file_name) == 1)
 			{
-				g_global.error_num = 1;
+				info->error_num = 1;
 				return (restart_minishell(info));
 			}
 		}
-		cmd->redirs = cmd->redirs->next;
+		cur_redirs = cur_redirs->next;
 	}
-	cmd->redirs = start;
 	return (EXIT_SUCCESS);
 }

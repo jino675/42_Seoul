@@ -6,66 +6,98 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 14:36:41 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/14 15:57:01 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/22 17:58:58 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int		check_quotes(char *line);
+int		make_chunks(t_info *info);
+int		make_cmds(t_info *info);
+void	execute_single(t_info *info, t_cmd *cmd);
+void	execute(t_info *info);
+void	init_info_global(t_info *info);
+
 static void	chunks_clear(t_chunk **chunk_list_addr)
 {
-	t_chunk	*temp_chunk;
+	t_chunk	*cur_chunk;
+	t_chunk	*next_chunk;
 
-	if (*chunk_list_addr == NULL)
+	cur_chunk = *chunk_list_addr;
+	if (cur_chunk == NULL)
 		return ;
-	while (*chunk_list_addr != NULL)
+	while (cur_chunk != NULL)
 	{
-		temp_chunk = (*chunk_list_addr)->next;
-		if ((*chunk_list_addr)->str != NULL)
-			free((*chunk_list_addr)->str);
-		free(*chunk_list_addr);
-		*chunk_list_addr = temp_chunk;
+		next_chunk = cur_chunk->next;
+		if (cur_chunk->str != NULL)
+			free(cur_chunk->str);
+		free(cur_chunk);
+		cur_chunk = next_chunk;
 	}
 	*chunk_list_addr = NULL;
 }
 
-static void	cmds_clear(t_cmd **cmd_list_addr)
+static void	prepare_executor(t_info *info)
 {
-	t_cmd	*temp_cmd;
-	t_chunk	*temp_redirs;
-
-	if (*cmd_list_addr == NULL)
-		return ;
-	while (*cmd_list_addr != NULL)
+	if (info->pipes == 0)
+		execute_single(info, info->cmds);
+	else
 	{
-		temp_cmd = (*cmd_list_addr)->next;
-		temp_redirs = (*cmd_list_addr)->redirs;
-		chunks_clear(&temp_redirs);
-		if ((*cmd_list_addr)->strs != NULL)
-			free_strs((*cmd_list_addr)->strs);
-		if ((*cmd_list_addr)->hd_file_name != NULL)
-			free((*cmd_list_addr)->hd_file_name);
-		free(*cmd_list_addr);
-		*cmd_list_addr = temp_cmd;
+		info->pids = ft_calloc(sizeof(int), info->pipes + 2);
+		// if (info->pids == NULL)
+		// 	return (print_error(1, info, 0));
+		execute(info);
+	}
+}
+
+void	cmds_clear(t_cmd **cmd_list_addr)
+{
+	t_cmd	*cur_cmd;
+	t_cmd	*next_cmd;
+	t_chunk	*cur_redirs;
+
+	cur_cmd = *cmd_list_addr;
+	if (cur_cmd == NULL)
+		return ;
+	while (cur_cmd != NULL)
+	{
+		next_cmd = cur_cmd->next;
+		cur_redirs = cur_cmd->redirs;
+		chunks_clear(&cur_redirs);
+		if (cur_cmd->strs != NULL)
+			free_strs(cur_cmd->strs);
+		if (cur_cmd->hd_file_name != NULL)
+			free(cur_cmd->hd_file_name);
+		free(cur_cmd);
+		cur_cmd = next_cmd;
 	}
 	*cmd_list_addr = NULL;
 }
 
-static int	prepare_executor(t_info *info)
+int	minishell(t_info *info)
 {
-	signal(SIGQUIT, sig_quit);
-	g_global.in_cmd = 1;
-	if (info->pipes == 0)
-		single_cmd(info->cmds, info);
-	else
+	char	*temp;
+
+	info->line = readline("minishell$ ");
+	temp = ft_strtrim(info->line, " ");
+	if (temp == NULL)
 	{
-		info->pids = ft_calloc(sizeof(int), info->pipes + 2);
-		if (info->pids == NULL)
-			return (print_error(1, info));
-		execute(info);
+		ft_putendl_fd("exit", STDOUT_FILENO);
+		exit(EXIT_SUCCESS);
 	}
-	g_global.in_cmd = 0;
-	return (EXIT_SUCCESS);
+	if (temp[0] == '\0')
+		return (restart_minishell(info));
+	add_history(info->line);
+	free(info->line);
+	info->line = temp;
+	if (check_quotes(info->line) == EXIT_FAILURE)
+		return (print_error(2, info, 0));
+	if (make_chunks(info) == EXIT_FAILURE)
+		return (print_error(1, info, 0));
+	make_cmds(info);
+	prepare_executor(info);
+	return (restart_minishell(info));
 }
 
 int	restart_minishell(t_info *info)
@@ -78,31 +110,5 @@ int	restart_minishell(t_info *info)
 	init_info_global(info);
 	info->reset = true;
 	minishell(info);
-	return (1);
-}
-
-int	minishell(t_info *info)
-{
-	char	*temp;
-
-	info->line = readline("minishell $ ");
-	temp = ft_strtrim(info->line, " ");
-	if (temp == NULL)
-	{
-		ft_putendl_fd("exit", STDOUT_FILENO);
-		exit(EXIT_SUCCESS);
-	}
-	if (temp[0] == '\0')
-		return (restart_minishell(info));
-	add_history(info->line);
-	free(info->line);
-	info->line = temp;
-	if (check_quotes(info->line) == 0)
-		return (print_error(2, info));
-	if (make_chunks(info) == 0)
-		return (print_error(1, info));
-	make_cmds(info);
-	prepare_executor(info);
-	restart_minishell(info);
-	return (1);
+	return (EXIT_SUCCESS);
 }

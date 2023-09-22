@@ -6,11 +6,30 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 14:12:11 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/14 22:10:13 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/22 20:26:38 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	dollar_general(t_info *info, char **str_addr, int cur_idx);
+
+static int	find_dollar_idx(char *str, int cur_idx)
+{
+	int	s_cnt;
+	int	i;
+
+	i = cur_idx;
+	s_cnt = 0;
+	while (str[++i] != '\0')
+	{
+		if (s_cnt % 2 == 0 && str[i] == '$')
+			break ;
+		if (str[i] == '\'')
+			++s_cnt;
+	}
+	return (i);
+}
 
 static int	dollar_digit(char **str_addr, int cur_idx)
 {
@@ -25,7 +44,7 @@ static int	dollar_digit(char **str_addr, int cur_idx)
 	return (cur_idx);
 }
 
-static int	dollar_question(char **str_addr, int cur_idx)
+static int	dollar_question(char **str_addr, int cur_idx, int error_num)
 {
 	char	*str;
 	char	*new_str;
@@ -33,12 +52,12 @@ static int	dollar_question(char **str_addr, int cur_idx)
 
 	str = *str_addr;
 	new_str = ft_substr(str, 0, cur_idx);
-	nbr = ft_itoa(g_global.error_num);
+	nbr = ft_itoa(error_num);
 	ft_strattach(&new_str, nbr);
-	cur_idx += ft_strlen(nbr);
-	free(nbr);
 	ft_strattach(&new_str, &str[cur_idx + 2]);
 	free(*str_addr);
+	cur_idx += ft_strlen(nbr);
+	free(nbr);
 	*str_addr = new_str;
 	return (cur_idx);
 }
@@ -53,14 +72,14 @@ void	dollar_all(t_info *info, char **str_addr)
 	while (str[i] != '\0')
 	{
 		if (str[i] == '$' && ft_isdigit(str[i + 1]) == 1)
-			i = dollar_digit(&str, i);\
+			i = dollar_digit(&str, i);
 		else if (str[i] == '$' && str[i + 1] == '?')
-			i = dollar_question(&str, i);
-		else if (str[i] == '$' && str[i + 1] != '\0' && \
-		(str[i + 1] != ' ' && (str[i + 1] != '\"' || str[i + 2] != '\0')))
+			i = dollar_question(&str, i, info->error_num);
+		else if (str[i] == '$' && str[i + 1] != '\0' && str[i + 1] != ' ' && \
+				!(str[i + 1] == '\"' && str[i + 2] == '\0'))
 			i = dollar_general(info, &str, i);
 		else
-			++i;
+			i = find_dollar_idx(str, i);
 	}
 	*str_addr = str;
 }

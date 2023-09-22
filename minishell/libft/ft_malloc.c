@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_malloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/11 13:24:30 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/22 20:24:50 by jiryu            ###   ########.fr       */
+/*   Created: 2023/09/22 16:01:58 by jiryu             #+#    #+#             */
+/*   Updated: 2023/09/22 20:24:40 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	initialize(t_info *info, char **ev);
-int		minishell(t_info *info);
-
-int	main(int ac, char **av, char **ev)
+void	*ft_malloc(unsigned long size)
 {
-	t_info	info;
+	void	*res;
 
-	if (ac != 1 || av[1] != NULL)
+	res = malloc(size);
+	if (res == NULL)
 	{
-		printf("I don't need any arguments!\n");
-		exit(0);
+		ft_putstr_fd("memory error: unable to assign memory\n", STDERR_FILENO);
+		exit(1);
 	}
-	initialize(&info, ev);
-	minishell(&info);
-	return (0);
+	else
+		return (res);
 }

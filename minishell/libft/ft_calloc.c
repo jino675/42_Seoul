@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 12:17:38 by jiryu             #+#    #+#             */
-/*   Updated: 2023/01/22 17:34:19 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/22 16:04:59 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	*ft_calloc(size_t count, size_t size)
 
 	if (size != 0 && count > SIZE_MAX / size)
 		return (NULL);
-	res = (char *)malloc(count * size);
+	res = (char *)ft_malloc(count * size);
 	if (res == NULL)
 		return (NULL);
 	i = 0;

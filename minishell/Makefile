@@ -6,7 +6,7 @@
 #    By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/11 16:14:19 by jiryu             #+#    #+#              #
-#    Updated: 2023/09/14 16:13:37 by jiryu            ###   ########.fr        #
+#    Updated: 2023/09/22 20:09:48 by jiryu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,18 +24,21 @@ SRCS = src/main.c						\
 		src/cmd/cmd_3.c					\
 		src/cmd/cmd_4.c					\
 		src/builtin/my_echo.c			\
-		src/builtin/my_cd.c				\
+		src/builtin/my_cd_1.c			\
+		src/builtin/my_cd_2.c			\
 		src/builtin/my_env.c			\
 		src/builtin/my_exit.c			\
 		src/builtin/my_pwd.c			\
-		src/builtin/my_unset.c			\
-		src/builtin/my_export.c			\
+		src/builtin/my_unset_1.c		\
+		src/builtin/my_unset_2.c		\
+		src/builtin/my_export_1.c		\
+		src/builtin/my_export_2.c		\
+		src/builtin/my_export_3.c		\
 		src/signal/signal.c				\
 		src/execute/execute_1.c			\
 		src/execute/execute_2.c			\
 		src/execute/execute_3.c			\
 		src/execute/execute_4.c			\
-		src/execute/execute_5.c			\
 		src/dollar/dollar_1.c			\
 		src/dollar/dollar_2.c			\
 		src/dollar/dollar_3.c
@@ -49,11 +52,9 @@ CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 
 RM = rm -f
 
-DIR_READLINE = $(shell brew --prefix readline)
-
 LIBFT = ./libft/libft.a
 DIR_LIBFT = ./libft/
-INC_OPT = -L./libft/ -lft -lreadline -lhistory -L $(DIR_READLINE)/lib
+INC_OPT = -L./libft/ -lft -lreadline -lhistory
 
 
 all : $(NAME)
@@ -72,7 +73,7 @@ clean :
 	$(RM) $(OBJS)
 
 fclean : clean
-	$(RM) $(NAME)
+	$(RM) $(NAME) ./.tmp_heredoc_file_*
 	$(MAKE) -C $(DIR_LIBFT) fclean
 
 re : fclean all

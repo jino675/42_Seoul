@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 14:09:57 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/13 20:22:29 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/22 20:32:59 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,9 @@ void	free_strs(char **strs)
 {
 	int	i;
 
-	i = 0;
-	while (strs[i] != NULL)
-	{
+	i = -1;
+	while (strs[++i] != NULL)
 		free(strs[i]);
-		i++;
-	}
 	free(strs);
 }
 
@@ -35,29 +32,29 @@ char	**strdup_arr(char **strs)
 	while (strs[cnt] != NULL)
 		cnt++;
 	res = ft_calloc(sizeof(char *), cnt + 1);
-	if (!res)
-		return (NULL);
+	// if (!res)
+	// 	return (NULL);
 	i = -1;
 	while (++i < (int)cnt)
 	{
 		res[i] = ft_strdup(strs[i]);
-		if (res[i] == NULL)
-		{
-			free_strs(res);
-			return (res);
-		}
+		// if (res[i] == NULL)
+		// {
+		// 	free_strs(res);
+		// 	return (res);
+		// }
 	}
 	return (res);
 }
 
-int	print_error(int code, t_info *info)
+int	print_error(int code, t_info *info, int is_child)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	if (code == 0)
-		ft_putstr_fd("syntax error near unexpected token 'newline'\n",	\
+		ft_putstr_fd("syntax error near unexpected token 'newline'\n", \
 			STDERR_FILENO);
-	else if (code == 1)
-		ft_putstr_fd("memory error: unable to assign memory\n", STDERR_FILENO);
+	// else if (code == 1)
+	// 	ft_putstr_fd("memory error: unable to assign memory\n", STDERR_FILENO);
 	else if (code == 2)
 		ft_putstr_fd("syntax error: unable to locate closing quotation\n",
 			STDERR_FILENO);
@@ -73,6 +70,7 @@ int	print_error(int code, t_info *info)
 		ft_putstr_fd("infile: No such file or directory\n", STDERR_FILENO);
 	else if (code == 8)
 		ft_putendl_fd("Path does not exist", STDERR_FILENO);
-	restart_minishell(info);
+	if (is_child == 0)
+		return (restart_minishell(info));
 	return (EXIT_FAILURE);
 }

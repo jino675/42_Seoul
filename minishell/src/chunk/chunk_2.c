@@ -6,11 +6,14 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 18:09:31 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/13 20:13:40 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/22 20:25:38 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int		add_token(char *str, t_chunk **chunk_list_addr);
+t_token	what_token(char c);
 
 static int	count_white_spaces(char *str)
 {
@@ -74,8 +77,8 @@ int	make_chunks(t_info *info)
 		else
 			ret = add_words(&info->line[i], &info->chunk_list);
 		if (ret < 0)
-			return (0);
+			return (EXIT_FAILURE);
 		i += ret;
 	}
-	return (1);
+	return (EXIT_SUCCESS);
 }

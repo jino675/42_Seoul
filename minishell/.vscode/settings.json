@@ -4,6 +4,8 @@
 		"__node_handle": "c",
 		"iterator": "c",
 		"sstream": "c",
-		"ios": "c"
+		"ios": "c",
+		"ratio": "c",
+		"minishell.h": "c"
 	}
 }

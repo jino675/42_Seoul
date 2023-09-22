@@ -5,89 +5,86 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/14 14:56:09 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/14 16:06:38 by jiryu            ###   ########.fr       */
+/*   Created: 2023/09/14 15:59:37 by jiryu             #+#    #+#             */
+/*   Updated: 2023/09/22 20:26:09 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*join_split_str(char **split_str, char *new_str)
-{
-	char	*tmp;
-	char	*add_space;
-	int		i;
+int	set_redirections(t_cmd *cmd);
 
-	tmp = ft_strdup(split_str[0]);
-	i = 1;
-	while (split_str[i])
-	{
-		new_str = tmp;
-		add_space = ft_strjoin(new_str, " ");
-		free(new_str);
-		tmp = ft_strjoin(add_space, split_str[i]);
-		free(add_space);
-		i++;
-	}
-	new_str = tmp;
-	return (new_str);
-}
-
-static char	**resplit_str(char **double_arr)
-{
-	char	**ret;
-	char	*joined_str;
-
-	joined_str = join_split_str(double_arr, NULL);
-	free_strs(double_arr);
-	ret = ft_split(joined_str, ' ');
-	free(joined_str);
-	joined_str = join_split_str(ret, NULL);
-	free_strs(ret);
-	ret = ft_split(joined_str, ' ');
-	free(joined_str);
-	return (ret);
-}
-
-static int	cmd_not_found(char *str)
-{
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(str, STDERR_FILENO);
-	ft_putstr_fd(": command not found\n", STDERR_FILENO);
-	return (127);
-}
-
-int	find_cmd(t_cmd *cmd, t_info *info)
+static int	run_cmd(t_cmd *cmd, t_info *info)
 {
 	int		i;
 	char	*mycmd;
 
-	i = 0;
-	cmd->strs = resplit_str(cmd->strs);
-	if (!access(cmd->strs[0], F_OK))
+	if (access(cmd->strs[0], F_OK) == 0)
 		execve(cmd->strs[0], cmd->strs, info->ev);
-	while (info->paths[i])
+	i = -1;
+	while (info->paths[++i] != NULL)
 	{
 		mycmd = ft_strjoin(info->paths[i], cmd->strs[0]);
-		if (!access(mycmd, F_OK))
+		if (access(mycmd, F_OK) == 0)
 			execve(mycmd, cmd->strs, info->ev);
 		free(mycmd);
-		i++;
 	}
-	return (cmd_not_found(cmd->strs[0]));
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(cmd->strs[0], STDERR_FILENO);
+	ft_putstr_fd(": command not found\n", STDERR_FILENO);
+	return (127);
 }
 
-t_cmd	*get_first_cmd(t_cmd *map)
+void	execute_cmd(t_info *info, t_cmd *cmd)
+{
+	int	exit_code;
+
+	exit_code = 0;
+	if (cmd->redirs != NULL)
+		if (set_redirections(cmd) == EXIT_FAILURE)
+			exit(1);
+	if (cmd->builtin != NULL)
+		exit_code = cmd->builtin(info, cmd);
+	else
+		exit_code = run_cmd(cmd, info);
+	exit(exit_code);
+}
+
+void	fork_execute(t_info *info, t_cmd *cmd, int end[2], int fd_in)
+{
+	static int	i;
+
+	if (info->reset == true)
+	{
+		i = 0;
+		info->reset = false;
+	}
+	info->pids[i] = fork();
+	if (info->pids[i] < 0)
+		print_error(5, info, 0);
+	if (info->pids[i] == 0)
+	{
+		if (cmd->prev != NULL && dup2(fd_in, STDIN_FILENO) < 0)
+			print_error(4, info, 1);
+		close(end[0]);
+		if (cmd->next != NULL && dup2(end[1], STDOUT_FILENO) < 0)
+			print_error(4, info, 1);
+		close(end[1]);
+		if (cmd->prev != NULL)
+			close(fd_in);
+		execute_cmd(info, cmd);
+	}
+	++i;
+}
+
+void	pipe_wait(t_info *info, int *pid, int pipe_cnt)
 {
 	int	i;
+	int	status;
 
-	i = 0;
-	if (!map)
-		return (NULL);
-	while (map->prev != NULL)
-	{
-		map = map->prev;
-		i++;
-	}
-	return (map);
+	i = -1;
+	while (++i < pipe_cnt + 1)
+		waitpid(pid[i], &status, 0);
+	if (WIFEXITED(status) != 0)
+		info->error_num = WEXITSTATUS(status);
 }

@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 18:27:12 by jiryu             #+#    #+#             */
-/*   Updated: 2023/01/22 19:02:17 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/22 16:04:36 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	cal_word_count(char const *s, char c)
 
 static int	malloc_guard(char **str, int idx, int size)
 {
-	str[idx] = (char *)malloc(sizeof(char) * (size + 1));
+	str[idx] = (char *)ft_malloc(sizeof(char) * (size + 1));
 	if (str[idx] == NULL)
 		return (0);
 	str[idx][size] = '\0';
@@ -108,7 +108,7 @@ char	**ft_split(char const *s, char c)
 	char	**res;
 
 	word_count = cal_word_count(s, c);
-	res = (char **)malloc(sizeof(char *) * (word_count + 1));
+	res = (char **)ft_malloc(sizeof(char *) * (word_count + 1));
 	if (res == NULL)
 		return (NULL);
 	res[word_count] = NULL;

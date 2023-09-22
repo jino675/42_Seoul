@@ -6,91 +6,80 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 14:51:43 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/14 15:59:27 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/20 20:42:23 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	check_append_outfile(t_chunk *redirs)
+static int	set_infile(char *filename)
+{
+	int	fd;
+
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(filename, STDERR_FILENO);
+		ft_putendl_fd(": No such file or directory\n", STDERR_FILENO);
+		return (EXIT_FAILURE);
+	}
+	if (dup2(fd, STDIN_FILENO) < 0)
+	{
+		ft_putstr_fd("minishell: pipe error\n", STDERR_FILENO);
+		return (EXIT_FAILURE);
+	}
+	close(fd);
+	return (EXIT_SUCCESS);
+}
+
+static int	set_outfile(t_chunk *redirs)
 {
 	int	fd;
 
 	if (redirs->token == D_OUT)
-		fd = open(redirs->str,
-				O_CREAT | O_RDWR | O_APPEND, 0644);
+		fd = open(redirs->str, O_CREAT | O_RDWR | O_APPEND, 0644);
 	else
-		fd = open(redirs->str,
-				O_CREAT | O_RDWR | O_TRUNC, 0644);
-	return (fd);
-}
-
-static int	handle_infile(char *file)
-{
-	int	fd;
-
-	fd = open(file, O_RDONLY);
+		fd = open(redirs->str, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd < 0)
 	{
-		ft_putstr_fd("minishell: infile: No such file or directory\n",
-			STDERR_FILENO);
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(redirs->str, STDERR_FILENO);
+		ft_putendl_fd(": Error\n", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
-	if (fd > 0 && dup2(fd, STDIN_FILENO) < 0)
+	if (dup2(fd, STDOUT_FILENO) < 0)
 	{
 		ft_putstr_fd("minishell: pipe error\n", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
-	if (fd > 0)
-		close(fd);
+	close(fd);
 	return (EXIT_SUCCESS);
 }
 
-static int	handle_outfile(t_chunk *redirs)
+int	set_redirections(t_cmd *cmd)
 {
-	int	fd;
+	t_chunk	*cur_redirs;
 
-	fd = check_append_outfile(redirs);
-	if (fd < 0)
+	cur_redirs = cmd->redirs;
+	while (cur_redirs != NULL)
 	{
-		ft_putstr_fd("minishell: outfile: Error\n", STDERR_FILENO);
-		return (EXIT_FAILURE);
-	}
-	if (fd > 0 && dup2(fd, STDOUT_FILENO) < 0)
-	{
-		ft_putstr_fd("minishell: pipe error\n", STDERR_FILENO);
-		return (EXIT_FAILURE);
-	}
-	if (fd > 0)
-		close(fd);
-	return (EXIT_SUCCESS);
-}
-
-int	check_redirections(t_cmd *cmd)
-{
-	t_chunk	*start;
-
-	start = cmd->redirs;
-	while (cmd->redirs)
-	{
-		if (cmd->redirs->token == IN)
+		if (cur_redirs->token == IN)
 		{
-			if (handle_infile(cmd->redirs->str))
+			if (set_infile(cur_redirs->str) == 1)
 				return (EXIT_FAILURE);
 		}
-		else if (cmd->redirs->token == OUT
-			|| cmd->redirs->token == D_OUT)
+		else if (cur_redirs->token == OUT || cur_redirs->token == D_OUT)
 		{
-			if (handle_outfile(cmd->redirs))
+			if (set_outfile(cur_redirs) == 1)
 				return (EXIT_FAILURE);
 		}
-		else if (cmd->redirs->token == D_IN)
+		else if (cur_redirs->token == D_IN)
 		{
-			if (handle_infile(cmd->hd_file_name))
+			if (set_infile(cmd->hd_file_name) == 1)
 				return (EXIT_FAILURE);
 		}
-		cmd->redirs = cmd->redirs->next;
+		cur_redirs = cur_redirs->next;
 	}
-	cmd->redirs = start;
 	return (EXIT_SUCCESS);
 }

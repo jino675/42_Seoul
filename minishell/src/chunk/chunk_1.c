@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 18:07:14 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/14 12:20:11 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/22 20:25:31 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,6 @@ int	check_quotes(char *line)
 			++i;
 	}
 	if (s_cnt % 2 == 1 || d_cnt % 2 == 1)
-		return (0);
-	return (1);
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }

@@ -6,43 +6,25 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 20:53:07 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/13 20:22:37 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/22 20:25:52 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	print_token_error(t_info *info, t_chunk *chunk_list, t_token token)
-{
-	ft_putstr_fd("minishell: syntax error near unexpected token ", \
-													STDERR_FILENO);
-	if (token == OUT)
-		ft_putstr_fd("'>'\n", STDERR_FILENO);
-	else if (token == D_OUT)
-		ft_putstr_fd("'>>'\n", STDERR_FILENO);
-	else if (token == IN)
-		ft_putstr_fd("'<'\n", STDERR_FILENO);
-	else if (token == D_IN)
-		ft_putstr_fd("'<<'\n", STDERR_FILENO);
-	else if (token == PIPE)
-		ft_putstr_fd("'|'\n", STDERR_FILENO);
-	else
-		ft_putstr_fd("\n", STDERR_FILENO);
-	chunk_list_clear(&chunk_list);
-	restart_minishell(info);
-	return (EXIT_FAILURE);
-}
+t_cmd	*cmd_new(char **strs, int num_redirs, t_chunk *redirs);
 
-static void	add_redirection(t_chunk *cur_chunk, t_parse_info *parse_info)
+static void	add_redirection(t_parse_info *parse_info, t_chunk *cur_chunk, \
+														t_chunk *next_chunk)
 {
 	t_chunk	*new_chunk;
 
-	new_chunk = chunk_new(ft_strdup(cur_chunk->next->str), cur_chunk->token);
+	new_chunk = chunk_new(ft_strdup(next_chunk->str), cur_chunk->token);
 	if (new_chunk == NULL)
 		chunk_clear_print_error(1, parse_info->info, parse_info->chunk_list);
 	chunk_list_push(&parse_info->redirs, new_chunk);
 	chunk_list_erase(&parse_info->chunk_list, cur_chunk->idx);
-	chunk_list_erase(&parse_info->chunk_list, cur_chunk->next->idx);
+	chunk_list_erase(&parse_info->chunk_list, next_chunk->idx);
 	++parse_info->num_redirs;
 }
 
@@ -64,7 +46,7 @@ static void	collect_redirection(t_parse_info *parse_info)
 			print_token_error(parse_info->info,
 				parse_info->chunk_list, cur_chunk->next->token);
 		if ((cur_chunk->token >= OUT && cur_chunk->token <= D_IN))
-			add_redirection(cur_chunk, parse_info);
+			add_redirection(parse_info, cur_chunk, cur_chunk->next);
 	}
 }
 
@@ -93,8 +75,8 @@ t_cmd	*init_cmd(t_parse_info *parse_info)
 	collect_redirection(parse_info);
 	cur_arg_cnt = count_cur_args(parse_info->chunk_list);
 	strs = ft_calloc(cur_arg_cnt + 1, sizeof(char *));
-	if (strs == NULL)
-		chunk_clear_print_error(1, parse_info->info, parse_info->chunk_list);
+	// if (strs == NULL)
+		// chunk_clear_print_error(1, parse_info->info, parse_info->chunk_list);
 	i = -1;
 	cur_chunk = parse_info->chunk_list;
 	while (--cur_arg_cnt >= 0)
@@ -107,4 +89,24 @@ t_cmd	*init_cmd(t_parse_info *parse_info)
 		}
 	}
 	return (cmd_new(strs, parse_info->num_redirs, parse_info->redirs));
+}
+
+int	print_token_error(t_info *info, t_chunk *chunk_list, t_token token)
+{
+	ft_putstr_fd("minishell: syntax error near unexpected token ", \
+													STDERR_FILENO);
+	if (token == OUT)
+		ft_putstr_fd("'>'\n", STDERR_FILENO);
+	else if (token == D_OUT)
+		ft_putstr_fd("'>>'\n", STDERR_FILENO);
+	else if (token == IN)
+		ft_putstr_fd("'<'\n", STDERR_FILENO);
+	else if (token == D_IN)
+		ft_putstr_fd("'<<'\n", STDERR_FILENO);
+	else if (token == PIPE)
+		ft_putstr_fd("'|'\n", STDERR_FILENO);
+	else
+		ft_putstr_fd("\n", STDERR_FILENO);
+	chunk_list_clear(&chunk_list);
+	return (restart_minishell(info));
 }

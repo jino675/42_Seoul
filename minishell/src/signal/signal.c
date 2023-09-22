@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 20:44:43 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/14 15:56:04 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/22 20:26:17 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,19 @@ static int	event(void)
 
 static void	sigint_handler(int sig)
 {
-	if (!g_global.in_heredoc)
+	sig = 0;
+	if (g_in_heredoc == 0)
 		ft_putstr_fd("\n", STDERR_FILENO);
-	if (g_global.in_cmd)
+	if (g_in_heredoc == 1)
 	{
-		g_global.stop_heredoc = 1;
+		g_in_heredoc = 0;
 		rl_replace_line("", 0);
-		rl_redisplay();
 		rl_done = 1;
 		return ;
 	}
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	(void) sig;
 }
 
 void	init_signals(void)

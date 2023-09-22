@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize_3.c                                       :+:      :+:    :+:   */
+/*   chunk_3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 18:33:28 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/13 18:09:21 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/22 20:25:40 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ t_chunk	*chunk_new(char *str, int token)
 	static int	i;
 	t_chunk		*new_chunk;
 
-	new_chunk = (t_chunk *)malloc(sizeof(t_chunk));
-	if (new_chunk == NULL)
-		return (0);
+	new_chunk = (t_chunk *)ft_calloc(1, sizeof(t_chunk));
+	// if (new_chunk == NULL)
+	// 	return (0);
 	new_chunk->str = str;
 	new_chunk->token = token;
 	new_chunk->idx = i++;
@@ -51,8 +51,8 @@ int	make_new_chunk(char *str, t_token token, t_chunk **chunk_list)
 	t_chunk	*new_chunk;
 
 	new_chunk = chunk_new(str, token);
-	if (new_chunk == NULL)
-		return (0);
+	// if (new_chunk == NULL)
+	// 	return (0);
 	chunk_list_push(chunk_list, new_chunk);
 	return (1);
 }

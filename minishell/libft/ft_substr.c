@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 15:09:52 by jiryu             #+#    #+#             */
-/*   Updated: 2023/01/22 13:38:45 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/22 16:04:18 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		size = s_len - start;
 	if (size > len)
 		size = len;
-	res = (char *)malloc(sizeof(char) * (size + 1));
+	res = (char *)ft_malloc(sizeof(char) * (size + 1));
 	if (res == NULL)
 		return (NULL);
 	if (start >= s_len)

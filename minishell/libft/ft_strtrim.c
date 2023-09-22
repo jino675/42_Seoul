@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 16:46:10 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/11 15:22:28 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/22 16:04:11 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 		end = cal_end(s1, set, s_len);
 		size = end - start + 1;
 	}
-	res = (char *)malloc(sizeof(char) * (size + 1));
+	res = (char *)ft_malloc(sizeof(char) * (size + 1));
 	if (res == NULL)
 		return (NULL);
 	else if (size == 0)

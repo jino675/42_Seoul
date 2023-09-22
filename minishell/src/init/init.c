@@ -6,13 +6,15 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 14:12:31 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/14 15:54:05 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/22 20:20:16 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	check_pwd(t_info *info)
+void	init_signals(void);
+
+static void	check_pwd(t_info *info)
 {
 	int	i;
 
@@ -24,7 +26,6 @@ static int	check_pwd(t_info *info)
 		if (ft_strncmp(info->ev[i], "OLDPWD=", 7) == 0)
 			info->o_pwd = ft_substr(info->ev[i], 7, ft_strlen(info->ev[i]) - 7);
 	}
-	return (1);
 }
 
 static char	*sub_find_paths(char **ev)
@@ -38,7 +39,7 @@ static char	*sub_find_paths(char **ev)
 	return (ft_strdup("\0"));
 }
 
-static int	find_paths(t_info *info)
+static void	find_paths(t_info *info)
 {
 	char	*paths;
 	int		i;
@@ -48,33 +49,30 @@ static int	find_paths(t_info *info)
 	info->paths = ft_split(paths, ':');
 	free(paths);
 	i = -1;
-	while (info->paths[++i])
+	while (info->paths[++i] != NULL)
 	{
 		cur_len = ft_strlen(info->paths[i]);
 		if (ft_strncmp(&info->paths[i][cur_len - 1], "/", 1) != 0)
 			ft_strattach(&info->paths[i], "/");
 	}
-	return (EXIT_SUCCESS);
 }
 
-int	init_info_global(t_info *info)
+void	init_info_global(t_info *info)
 {
 	info->cmds = NULL;
 	info->chunk_list = NULL;
 	info->reset = false;
 	info->pids = NULL;
 	info->heredoc = false;
-	g_global.stop_heredoc = 0;
-	g_global.in_cmd = 0;
-	g_global.in_heredoc = 0;
+	g_in_heredoc = 0;
 	find_paths(info);
 	init_signals();
-	return (1);
 }
 
 void	initialize(t_info *info, char **ev)
 {
 	info->ev = strdup_arr(ev);
+	info->not_ev = (char **)ft_calloc(1, sizeof(char *));
 	check_pwd(info);
 	init_info_global(info);
 	printf("\nWellcome to Minishell!\n\n");

@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 22:08:30 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/13 19:53:48 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/22 20:25:54 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ t_cmd	*cmd_new(char **strs, int num_redirs, t_chunk *redirs)
 {
 	t_cmd	*new_cmd;
 
-	new_cmd = (t_cmd *)malloc(sizeof(t_cmd));
-	if (new_cmd == NULL)
-		return (NULL);
+	new_cmd = (t_cmd *)ft_calloc(1, sizeof(t_cmd));
+	// if (new_cmd == NULL)
+	// 	return (NULL);
 	new_cmd->strs = strs;
 	new_cmd->builtin = builtin_arr(strs[0]);
 	new_cmd->hd_file_name = NULL;
@@ -54,7 +54,7 @@ t_cmd	*cmd_new(char **strs, int num_redirs, t_chunk *redirs)
 void	chunk_clear_print_error(int code, t_info *info, t_chunk *chunk_list)
 {
 	chunk_list_clear(&chunk_list);
-	print_error(code, info);
+	print_error(code, info, 0);
 }
 
 void	cmd_list_push(t_cmd **cmd_list_addr, t_cmd *new_cmd)

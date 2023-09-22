@@ -6,75 +6,65 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 21:07:13 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/14 16:07:42 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/22 17:55:55 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_cmd	*call_expander(t_info *info, t_cmd *cmd)
-{
-	t_chunk	*start;
+void	expand_dollar(t_info *info, t_cmd *cmd);
+int		set_heredoc(t_info *info, t_cmd *cmd);
+void	fork_execute(t_info *info, t_cmd *cmd, int end[2], int fd_in);
+void	pipe_wait(t_info *info, int *pid, int pipe_cnt);
+void	execute_cmd(t_info *info, t_cmd *cmd);
+void	sig_quit(int signal);
 
-	cmd->strs = expander(info, cmd->strs);
-	start = cmd->redirs;
-	while (cmd->redirs)
-	{
-		if (cmd->redirs->token != D_IN)
-			cmd->redirs->str
-				= expander_str(info, cmd->redirs->str);
-		cmd->redirs = cmd->redirs->next;
-	}
-	cmd->redirs = start;
-	return (cmd);
-}
-
-void	single_cmd(t_cmd *cmd, t_info *info)
+void	execute_single(t_info *info, t_cmd *cmd)
 {
 	int	pid;
 	int	status;
 
-	info->cmds = call_expander(info, info->cmds);
+	expand_dollar(info, info->cmds);
 	if (cmd->builtin == my_cd || cmd->builtin == my_exit || \
 		cmd->builtin == my_export || cmd->builtin == my_unset)
 	{
-		g_global.error_num = cmd->builtin(info, cmd);
+		info->error_num = cmd->builtin(info, cmd);
 		return ;
 	}
-	send_heredoc(info, cmd);
+	set_heredoc(info, cmd);
+	signal(SIGQUIT, sig_quit);
 	pid = fork();
 	if (pid < 0)
-		print_error(5, info);
+		print_error(5, info, 0);
 	if (pid == 0)
-		handle_cmd(cmd, info);
+		execute_cmd(info, cmd);
 	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		g_global.error_num = WEXITSTATUS(status);
+	if (WIFEXITED(status) != 0)
+		info->error_num = WEXITSTATUS(status);
 }
 
-int	execute(t_info *info)
+void	execute(t_info *info)
 {
 	int		end[2];
 	int		fd_in;
+	t_cmd	*cur_cmd;
 
-	fd_in = STDIN_FILENO;
-	while (info->cmds)
+	cur_cmd = info->cmds;
+	while (cur_cmd != NULL)
 	{
-		info->cmds = call_expander(info, info->cmds);
-		if (info->cmds->next)
+		expand_dollar(info, info->cmds);
+		if (cur_cmd->next != NULL)
 			pipe(end);
-		send_heredoc(info, info->cmds);
-		ft_fork(info, end, fd_in, info->cmds);
+		set_heredoc(info, cur_cmd);
+		signal(SIGQUIT, sig_quit);
+		fork_execute(info, cur_cmd, end, fd_in);
+		signal(SIGQUIT, SIG_IGN);
 		close(end[1]);
-		if (info->cmds->prev)
+		if (cur_cmd->prev)
 			close(fd_in);
-		fd_in = check_fd_heredoc(info, end, info->cmds);
-		if (info->cmds->next)
-			info->cmds = info->cmds->next;
-		else
-			break ;
+		if (cur_cmd->next != NULL)
+			fd_in = end[0];
+		cur_cmd = cur_cmd->next;
 	}
-	pipe_wait(info->pids, info->pipes);
-	info->cmds = get_first_cmd(info->cmds);
-	return (0);
+	pipe_wait(info, info->pids, info->pipes);
 }
