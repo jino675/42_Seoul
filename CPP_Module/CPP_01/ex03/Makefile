@@ -1,0 +1,51 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/09/24 17:55:25 by jiryu             #+#    #+#              #
+#    Updated: 2023/09/24 19:58:56 by jiryu            ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+NAME = brain
+
+HDRS = hdr/Weapon.hpp		\
+		hdr/HumanA.hpp		\
+		hdr/HumanB.hpp
+
+SRCS = src/main.cpp			\
+		src/Weapon.cpp		\
+		src/HumanA.cpp		\
+		src/HumanB.cpp
+
+OBJS = $(SRCS:.cpp=.o)
+
+RM = rm -f
+
+GPP = g++
+CPPFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+
+INC_OPT = -I hdr/
+
+STD = -std=c++98
+
+all : $(NAME)
+
+$(NAME) : $(OBJS)
+	$(GPP) $(CPPFLAGS) $(STD) -o $@ $^
+
+%.o : %.cpp
+	$(GPP) $(CPPFLAGS) $(STD) $(INC_OPT) -c -o $@ $<
+
+clean :
+	$(RM) $(OBJS)
+
+fclean : clean
+	$(RM) $(NAME)
+
+re : fclean all
+
+.PHONY : all re fclean clean

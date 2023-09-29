@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 13:24:56 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/22 20:24:19 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/28 12:33:33 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,11 @@
 # include <string.h>
 # include <fcntl.h>
 # include <unistd.h>
+# include <sys/stat.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdbool.h>
+# include <limits.h>
 
 struct					s_cmd;
 typedef struct s_cmd	t_cmd;
@@ -56,7 +58,7 @@ typedef struct s_info
 	char			*o_pwd;
 	int				pipes;
 	int				*pids;
-	char			error_num;
+	unsigned char	error_num;
 	bool			heredoc;
 	bool			reset;
 }	t_info;
@@ -68,6 +70,7 @@ typedef struct s_cmd
 	int				num_redirs;
 	char			*hd_file_name;
 	t_chunk			*redirs;
+	bool			is_outfile;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 }	t_cmd;
@@ -76,6 +79,7 @@ typedef struct s_parse_info
 {
 	t_chunk			*chunk_list;
 	t_chunk			*redirs;
+	bool			is_outfile;
 	int				num_redirs;
 	struct s_info	*info;
 }	t_parse_info;
@@ -84,6 +88,7 @@ int						g_in_heredoc;
 
 int		restart_minishell(t_info *info);
 
+void	print_message(char *keyword, char *msg, int fd);
 void	free_strs(char **strs);
 char	**strdup_arr(char **strs);
 int		print_error(int code, t_info *info, int is_child);

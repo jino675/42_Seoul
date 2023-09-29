@@ -6,39 +6,26 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 22:29:46 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/22 20:25:19 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/28 12:59:50 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 void	unset_not_ev(t_info *info, t_cmd *cmd);
-int		get_ev_len(char *str);
 
-static int	is_error(t_cmd *cmd)
+static int	get_ev_len(char *str)
 {
-	int		i;
+	int	i;
 
-	if (cmd->strs[1] == NULL)
+	i = 0;
+	while (str[i] != '\0')
 	{
-		ft_putendl_fd("minishell: unset: not enough arguments", STDERR_FILENO);
-		return (EXIT_FAILURE);
+		if (str[i] == '=')
+			return (i);
+		++i;
 	}
-	i = -1;
-	while (cmd->strs[1][++i] != '\0')
-	{
-		if (cmd->strs[1][i] == '/' || cmd->strs[1][i] == '-' || \
-			cmd->strs[1][i] == '=' || cmd->strs[1][i] == '+' || \
-			cmd->strs[1][i] == '@' || cmd->strs[1][i] == '#' || \
-			cmd->strs[1][i] == '%' || cmd->strs[1][i] == '^')
-		{
-			ft_putstr_fd("minishell: unset: `", STDERR_FILENO);
-			ft_putstr_fd(cmd->strs[1], STDERR_FILENO);
-			ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
-			return (EXIT_FAILURE);
-		}
-	}
-	return (EXIT_SUCCESS);
+	return (0);
 }
 
 static int	search_ev(char **ev, char *str)
@@ -84,6 +71,8 @@ static void	unset_ev(t_info *info, t_cmd *cmd)
 	char	**new_ev;
 
 	get_cnt_ev(info->ev, cmd->strs, &ev_size, &unset_cnt);
+	if (unset_cnt == 0)
+		return ;
 	new_ev = (char **)ft_calloc(ev_size - unset_cnt, sizeof(char *));
 	i = -1;
 	j = -1;
@@ -100,8 +89,8 @@ static void	unset_ev(t_info *info, t_cmd *cmd)
 
 int	my_unset(t_info *info, t_cmd *cmd)
 {
-	if (is_error(cmd) == 1)
-		return (EXIT_FAILURE);
+	if (cmd->strs[1] == NULL || cmd->strs[1][0] == '\0')
+		return (EXIT_SUCCESS);
 	unset_ev(info, cmd);
 	unset_not_ev(info, cmd);
 	return (EXIT_SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 19:26:48 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/22 20:25:49 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/25 23:29:51 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static t_parse_info	init_parse_info(t_chunk *chunk_list, t_info *info)
 
 	temp.chunk_list = chunk_list;
 	temp.redirs = NULL;
+	temp.is_outfile = false;
 	temp.num_redirs = 0;
 	temp.info = info;
 	return (temp);
@@ -80,8 +81,6 @@ int	make_cmds(t_info *info)
 			return (EXIT_FAILURE);
 		parse_info = init_parse_info(info->chunk_list, info);
 		new_cmd = init_cmd(&parse_info);
-		// if (new_cmd == NULL)
-		// 	chunk_clear_print_error(0, info, parse_info.chunk_list);
 		cmd_list_push(&info->cmds, new_cmd);
 		info->chunk_list = parse_info.chunk_list;
 	}

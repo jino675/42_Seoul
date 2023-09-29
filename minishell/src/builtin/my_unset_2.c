@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 19:18:37 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/22 19:49:59 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/25 22:20:25 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void	unset_not_ev(t_info *info, t_cmd *cmd)
 	char	**new_not_ev;
 
 	get_cnt_not_ev(info->not_ev, cmd->strs, &not_ev_size, &unset_cnt);
+	if (unset_cnt == 0)
+		return ;
 	new_not_ev = (char **)ft_calloc(not_ev_size - unset_cnt, sizeof(char *));
 	i = -1;
 	j = -1;
@@ -64,18 +66,4 @@ void	unset_not_ev(t_info *info, t_cmd *cmd)
 	}
 	free(info->not_ev);
 	info->not_ev = new_not_ev;
-}
-
-int	get_ev_len(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == '=')
-			return (i);
-		++i;
-	}
-	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 14:12:31 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/22 20:20:16 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/25 23:22:14 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,4 @@ void	initialize(t_info *info, char **ev)
 	info->not_ev = (char **)ft_calloc(1, sizeof(char *));
 	check_pwd(info);
 	init_info_global(info);
-	printf("\nWellcome to Minishell!\n\n");
 }

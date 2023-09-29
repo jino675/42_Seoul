@@ -6,19 +6,21 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 20:53:07 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/22 20:25:52 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/28 12:54:20 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_cmd	*cmd_new(char **strs, int num_redirs, t_chunk *redirs);
+t_cmd	*cmd_new(t_parse_info *parse_info, char **strs);
 
 static void	add_redirection(t_parse_info *parse_info, t_chunk *cur_chunk, \
 														t_chunk *next_chunk)
 {
 	t_chunk	*new_chunk;
 
+	if (cur_chunk->token == OUT || cur_chunk->token == D_OUT)
+		parse_info->is_outfile = true;
 	new_chunk = chunk_new(ft_strdup(next_chunk->str), cur_chunk->token);
 	if (new_chunk == NULL)
 		chunk_clear_print_error(1, parse_info->info, parse_info->chunk_list);
@@ -75,8 +77,6 @@ t_cmd	*init_cmd(t_parse_info *parse_info)
 	collect_redirection(parse_info);
 	cur_arg_cnt = count_cur_args(parse_info->chunk_list);
 	strs = ft_calloc(cur_arg_cnt + 1, sizeof(char *));
-	// if (strs == NULL)
-		// chunk_clear_print_error(1, parse_info->info, parse_info->chunk_list);
 	i = -1;
 	cur_chunk = parse_info->chunk_list;
 	while (--cur_arg_cnt >= 0)
@@ -88,13 +88,12 @@ t_cmd	*init_cmd(t_parse_info *parse_info)
 			cur_chunk = parse_info->chunk_list;
 		}
 	}
-	return (cmd_new(strs, parse_info->num_redirs, parse_info->redirs));
+	return (cmd_new(parse_info, strs));
 }
 
 int	print_token_error(t_info *info, t_chunk *chunk_list, t_token token)
 {
-	ft_putstr_fd("minishell: syntax error near unexpected token ", \
-													STDERR_FILENO);
+	print_message("", "syntax error near unexpected token", STDERR_FILENO);
 	if (token == OUT)
 		ft_putstr_fd("'>'\n", STDERR_FILENO);
 	else if (token == D_OUT)
@@ -107,6 +106,7 @@ int	print_token_error(t_info *info, t_chunk *chunk_list, t_token token)
 		ft_putstr_fd("'|'\n", STDERR_FILENO);
 	else
 		ft_putstr_fd("\n", STDERR_FILENO);
+	info->error_num = 2;
 	chunk_list_clear(&chunk_list);
 	return (restart_minishell(info));
 }

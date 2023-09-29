@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 14:36:41 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/22 17:58:58 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/28 18:41:40 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ static void	prepare_executor(t_info *info)
 	else
 	{
 		info->pids = ft_calloc(sizeof(int), info->pipes + 2);
-		// if (info->pids == NULL)
-		// 	return (print_error(1, info, 0));
 		execute(info);
 	}
 }
@@ -80,17 +78,18 @@ int	minishell(t_info *info)
 	char	*temp;
 
 	info->line = readline("minishell$ ");
-	temp = ft_strtrim(info->line, " ");
-	if (temp == NULL)
+	if (info->line == NULL)
 	{
 		ft_putendl_fd("exit", STDOUT_FILENO);
 		exit(EXIT_SUCCESS);
 	}
-	if (temp[0] == '\0')
-		return (restart_minishell(info));
-	add_history(info->line);
+	if (info->line[0] != '\0')
+		add_history(info->line);
+	temp = ft_strtrim(info->line, " ");
 	free(info->line);
 	info->line = temp;
+	if (info->line[0] == '\0')
+		return (restart_minishell(info));
 	if (check_quotes(info->line) == EXIT_FAILURE)
 		return (print_error(2, info, 0));
 	if (make_chunks(info) == EXIT_FAILURE)

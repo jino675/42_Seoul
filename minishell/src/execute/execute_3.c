@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 14:51:43 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/20 20:42:23 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/28 12:53:17 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,12 @@ static int	set_infile(char *filename)
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(filename, STDERR_FILENO);
-		ft_putendl_fd(": No such file or directory\n", STDERR_FILENO);
+		print_message(filename, "No such file or directory", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
 	if (dup2(fd, STDIN_FILENO) < 0)
 	{
-		ft_putstr_fd("minishell: pipe error\n", STDERR_FILENO);
+		print_message("", "pipe error", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
 	close(fd);
@@ -45,12 +43,13 @@ static int	set_outfile(t_chunk *redirs)
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(redirs->str, STDERR_FILENO);
-		ft_putendl_fd(": Error\n", STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+		perror("");
 		return (EXIT_FAILURE);
 	}
 	if (dup2(fd, STDOUT_FILENO) < 0)
 	{
-		ft_putstr_fd("minishell: pipe error\n", STDERR_FILENO);
+		print_message("", "pipe error", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
 	close(fd);

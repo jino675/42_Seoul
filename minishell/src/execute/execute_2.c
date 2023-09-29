@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 21:08:17 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/22 17:47:36 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/24 19:01:18 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ int	set_heredoc(t_info *info, t_cmd *cmd)
 	{
 		if (cur_redirs->token == D_IN)
 		{
+			if (cmd->hd_file_name != NULL)
+				free(cmd->hd_file_name);
 			cmd->hd_file_name = get_filename();
 			if (get_input(info, cur_redirs, cmd->hd_file_name) == 1)
 			{

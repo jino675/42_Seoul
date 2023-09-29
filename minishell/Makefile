@@ -6,7 +6,7 @@
 #    By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/11 16:14:19 by jiryu             #+#    #+#              #
-#    Updated: 2023/09/22 20:09:48 by jiryu            ###   ########.fr        #
+#    Updated: 2023/09/28 13:10:35 by jiryu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,8 @@ OBJS = $(SRCS:.c=.o)
 HDRS = hdr/minishell.h
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror
+
 
 RM = rm -f
 
@@ -76,6 +77,7 @@ fclean : clean
 	$(RM) $(NAME) ./.tmp_heredoc_file_*
 	$(MAKE) -C $(DIR_LIBFT) fclean
 
-re : fclean all
+re : fclean
+	$(MAKE) all
 
 .PHONY : all fclean clean re

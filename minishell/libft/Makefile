@@ -6,7 +6,7 @@
 #    By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/22 18:12:11 by jiryu             #+#    #+#              #
-#    Updated: 2023/09/22 16:03:32 by jiryu            ###   ########.fr        #
+#    Updated: 2023/09/24 16:31:03 by jiryu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,10 +81,10 @@ OBJS = $(SRCS:.c=.o)
 all : $(NAME) $(HDRS)
 
 $(NAME) : $(OBJS) $(HDRS)
+	ar -rcusv $(NAME) $(OBJS)
 
 %.o : %.c
 	$(CC) -c -o $@ $(CFLAGS) $<
-	ar -rcusv $(NAME) $@
 
 clean :
 	rm -f $(OBJS)
@@ -92,6 +92,7 @@ clean :
 fclean : clean
 	rm -f $(NAME)
 
-re : fclean all
+re : fclean
+	$(MAKE) all
 
 .PHONY : all clean fclean re
