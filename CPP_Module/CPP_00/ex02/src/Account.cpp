@@ -6,17 +6,48 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 14:46:51 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/24 17:31:20 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/29 19:44:32 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Account.hpp"
+#include <iostream>
 #include <ctime>
 
 int Account::_nbAccounts = 0;
 int Account::_totalAmount = 0;
 int Account::_totalNbDeposits = 0;
 int Account::_totalNbWithdrawals = 0;
+
+int	Account::getNbAccounts(void)
+{
+	return (_nbAccounts);
+}
+
+int	Account::getTotalAmount(void)
+{
+	return (_totalAmount);
+}
+
+int	Account::getNbDeposits(void)
+{
+	return (_totalNbDeposits);
+}
+
+int	Account::getNbWithdrawals(void)
+{
+	return (_totalNbWithdrawals);
+}
+
+void	Account::displayAccountsInfos(void)\
+{
+	std::time_t	now = std::time(NULL);
+	char		buffer[16];
+
+	std::strftime(buffer, sizeof(buffer), "%Y%m%d_%H%M%S", std::localtime(&now));
+	std::cout << "[" << buffer << "] accounts:" << _nbAccounts << ";total:" << _totalAmount << ";deposits:" \
+				<< _totalNbDeposits << ";withdrawals:" << _totalNbWithdrawals << "\n";
+}
 
 Account::Account(int initial_deposit) : 
 _accountIndex(_nbAccounts), _amount(initial_deposit),

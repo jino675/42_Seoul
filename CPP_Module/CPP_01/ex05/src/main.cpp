@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 18:42:38 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/28 13:19:01 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/30 16:25:24 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int main(void)
 
 	while (true) {
 		std::cin >> input;
-		if (input == "QUIT")
+		if (std::cin.eof() == true || input == "QUIT")
 			break ;
 		lady.complain(input);
 	}

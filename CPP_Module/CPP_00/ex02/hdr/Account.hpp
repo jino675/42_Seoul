@@ -16,8 +16,6 @@
 //                               Account Class                                //
 // ************************************************************************** //
 
-#include <iostream>
-
 class Account {
 
 
@@ -25,29 +23,11 @@ public:
 
 	typedef Account		t;
 
-
-	static int	getNbAccounts(void) {
-		return (_nbAccounts);
-	}
-	static int	getTotalAmount(void) {
-		return (_totalAmount);
-	}
-
-	static int	getNbDeposits(void) {
-		return (_totalNbDeposits);
-	}
-	static int	getNbWithdrawals(void) {
-		return (_totalNbWithdrawals);
-	}
-
-	static void	displayAccountsInfos(void) {
-		std::time_t	now = std::time(NULL);
-		char		buffer[16];
-
-		std::strftime(buffer, sizeof(buffer), "%Y%m%d_%H%M%S", std::localtime(&now));
-		std::cout << "[" << buffer << "] accounts:" << _nbAccounts << ";total:" << _totalAmount << ";deposits:" \
-					<< _totalNbDeposits << ";withdrawals:" << _totalNbWithdrawals << "\n";
-	}
+	static int	getNbAccounts(void);
+	static int	getTotalAmount(void);
+	static int	getNbDeposits(void);
+	static int	getNbWithdrawals(void);
+	static void	displayAccountsInfos(void);
 
 	Account(int initial_deposit);
 	~Account(void);

@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 18:42:38 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/24 19:53:36 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/30 15:28:24 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,5 @@ int	main(void)
 	std::cout << "The value pointed to by stringPTR : " << *stringPTR << "\n";
 	std::cout << "The value pointed to by stringREF : " << stringREF << "\n";
 
-	return (1);
+	return (0);
 }

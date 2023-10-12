@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 21:42:41 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/25 14:38:36 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/30 15:45:10 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ private:
 public:
 	HumanB(std::string	name);
 	void	attack(void);
-	void	setWeapon(Weapon &weapon);
+	void	setWeapon(Weapon &new_weapon);
 };
 
 #endif

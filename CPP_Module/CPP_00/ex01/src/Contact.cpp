@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 17:25:35 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/23 19:58:48 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/30 15:01:33 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ Contact::Contact()
 {
 }
 
-Contact::Contact(std::string input[5])
+void	Contact::set_infos(std::string input[5])
 {
 	for (int i = 0; i < 5; ++i)
 		strs[i] = input[i];
@@ -33,18 +33,7 @@ void	Contact::display_all(void)
 	std::cout << "\n";
 }
 
-std::string	*Contact::get_names(void)
+std::string	Contact::get_info(int idx)
 {
-	std::string	*res;
-
-	res = new std::string[3];
-	for (int i = 0; i < 3; ++i) {
-		if (strs[i].size() > 10) {
-			res[i] = strs[i].substr(0, 9);
-			res[i] += ".";
-		}
-		else
-			res[i] = strs[i];
-	}
-	return (res);
+	return (strs[idx]);
 }

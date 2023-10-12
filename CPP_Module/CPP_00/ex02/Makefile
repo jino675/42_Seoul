@@ -6,7 +6,7 @@
 #    By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/23 16:28:03 by jiryu             #+#    #+#              #
-#    Updated: 2023/09/24 17:22:47 by jiryu            ###   ########.fr        #
+#    Updated: 2023/09/29 19:45:19 by jiryu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,20 +21,20 @@ OBJS = $(SRCS:.cpp=.o)
 
 RM = rm -f
 
-GPP = g++
-CPPFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CPP = c++
+CPPFLAGS = -Wall -Wextra -Werror
 
-INC_OPT = -I hdr/
+INC_OPT = -I ./hdr/
 
 STD = -std=c++98
 
 all : $(NAME)
 
 $(NAME) : $(OBJS)
-	$(GPP) $(CPPFLAGS) $(STD) -o $@ $^
+	$(CPP) $(CPPFLAGS) $(STD) -o $@ $^
 
-%.o : %.cpp
-	$(GPP) $(CPPFLAGS) $(STD) $(INC_OPT) -c -o $@ $<
+%.o : %.cpp $(HDRS)
+	$(CPP) $(CPPFLAGS) $(STD) $(INC_OPT) -c -o $@ $<
 
 clean :
 	$(RM) $(OBJS)
@@ -42,6 +42,7 @@ clean :
 fclean : clean
 	$(RM) $(NAME)
 
-re : fclean all
+re : fclean
+	$(MAKE)	all
 
 .PHONY : all re fclean clean

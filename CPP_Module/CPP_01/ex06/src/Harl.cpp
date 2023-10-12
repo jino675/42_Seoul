@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 21:44:11 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/28 13:46:41 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/30 16:41:23 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,12 @@ void	Harl::error(void)
 void	Harl::print_above(std::string level)
 {
 	int			i;
-	// void		(Harl::*functions[4])(void) = {&Harl::debug, &Harl::info, &Harl::warning, &Harl::error};
 	std::string	strs[4] = {"DEBUG", "INFO", "WARNING", "ERROR"};
 
-	// flag = 0;
 	for (i = 0; i < 4; ++i) {
 		if (strs[i] == level)
 			break ;
 	}
-	// if (flag == 0)
-	// 	std::cout << "[ Probably complaining about insignificant problems ]\n\n";
 	switch (i) {
 		case 0 :
 			debug();

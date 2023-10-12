@@ -85,7 +85,10 @@
 		"iomanip": "cpp",
 		"minishell.h": "c",
 		"fstream": "cpp",
-		"filesystem": "cpp"
+		"filesystem": "cpp",
+		"queue": "cpp",
+		"__functional_03": "cpp",
+		"memory_resource": "cpp"
 	},
 	"C_Cpp.errorSquiggles": "disabled"
 }

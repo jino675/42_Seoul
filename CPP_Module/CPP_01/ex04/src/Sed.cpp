@@ -6,13 +6,13 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 21:44:11 by jiryu             #+#    #+#             */
-/*   Updated: 2023/09/26 17:24:33 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/09/30 16:03:29 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Sed.hpp"
 
-void	Sed(std::string &filename, std::string &s1,std::string &s2)
+void	Sed(std::string filename, std::string s1, std::string s2)
 {
 	size_t		cur_idx;
 	std::string	cur_line, new_line;
