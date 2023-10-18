@@ -88,7 +88,9 @@
 		"filesystem": "cpp",
 		"queue": "cpp",
 		"__functional_03": "cpp",
-		"memory_resource": "cpp"
+		"memory_resource": "cpp",
+		"cub3d.h": "c",
+		"mlx.h": "c"
 	},
 	"C_Cpp.errorSquiggles": "disabled"
 }
