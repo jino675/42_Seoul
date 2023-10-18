@@ -16,7 +16,7 @@ ___
 9. minishell  (shell을 직접 구현하는 과제)
 10. CPP_MODULE 00-04  (CPP 기초 학습 과제)
 11. NetPractice  (네트워크 기초 학습 과제)
-
+12. cub3D  (레이 캐스팅 기법을 활용한 3D 그래픽 게임 구현)
 ___
 
 <img width="80%" src="https://user-images.githubusercontent.com/66165015/263749073-e7a170a9-0304-4471-bf84-7d02b4195369.png">
@@ -28,3 +28,5 @@ ___
 <img width="80%" src="https://user-images.githubusercontent.com/66165015/264249188-95b7fa21-a195-4f05-94a6-a78f4159b3ae.gif">
 
 <img width="80%" src="https://user-images.githubusercontent.com/66165015/271520548-1e524717-dc3e-424a-b7f0-8ba5788b17f5.gif">
+
+<img width="80%" src="https://user-images.githubusercontent.com/66165015/276143680-8f5d2da6-cabe-47c6-994d-00eeb2659554.gif">
