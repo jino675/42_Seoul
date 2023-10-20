@@ -6,7 +6,7 @@
 #    By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/07 20:30:45 by jiryu             #+#    #+#              #
-#    Updated: 2023/10/18 00:41:47 by jiryu            ###   ########.fr        #
+#    Updated: 2023/10/20 21:02:04 by jiryu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,19 +16,23 @@ DIR_SRCS_MANDATORY = ./src_mandatory/
 SRCS_MANDATORY = main.c					\
 				utils.c					\
 				init_vars.c				\
-				map_read.c				\
+				map_read_1.c			\
 				map_read_2.c			\
 				map_read_3.c			\
 				map_read_4.c			\
-				load_images.c			\
+				load_images_1.c			\
+				load_images_2.c			\
 				hook_functions.c		\
 				loop_hook.c				\
 				draw_view_1.c			\
 				draw_view_2.c			\
-				move_player.c			\
-				use_staff.c				\
-				draw_minimap.c
-# loop_hook_2.c					
+				draw_view_3.c			\
+				move_player_1.c			\
+				move_player_2.c			\
+				use_staff_1.c			\
+				use_staff_2.c			\
+				draw_minimap.c			\
+				change_direction.c
 
 OBJS_MANDATORY = $(addprefix $(DIR_SRCS_MANDATORY), $(SRCS_MANDATORY:.c=.o))
 

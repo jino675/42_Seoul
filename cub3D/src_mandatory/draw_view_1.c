@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 22:43:02 by jiryu             #+#    #+#             */
-/*   Updated: 2023/10/18 00:35:46 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/10/20 21:22:06 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,25 @@ static void	get_add_val(t_vars *v, t_cal *c)
 	}
 }
 
+// static int	check_orthogonal(t_vars *v, t_cal *c)
+// {
+// 	if (fabs(sin(c->cur_d)) <= 0.001)
+// 	{
+// 		if (check_xdir(v, c) == 1)
+// 			return (1);
+// 		else
+// 			return (2);
+// 	}
+// 	else if (fabs(cos(c->cur_d)) <= 0.001)
+// 	{
+// 		if (check_ydir(v, c) == 1)
+// 			return (1);
+// 		else
+// 			return (2);
+// 	}
+// 	return (0);
+// }
+
 static void	get_img_line(t_vars *v, t_cal *c)
 {
 	double	dis_1;
@@ -61,14 +80,9 @@ static void	get_img_line(t_vars *v, t_cal *c)
 		{
 			dis_1 = c->add_x / cos(c->cur_d);
 			dis_2 = c->add_y / sin(c->cur_d);
-			if (dis_1 < dis_2 && check_xdir(v, c) == 1)
+			if ((dis_1 < dis_2 && check_xdir(v, c) == 1) || \
+				(dis_1 >= dis_2 && check_ydir(v, c) == 1))
 				return ;
-			else if (dis_1 >= dis_2 && check_ydir(v, c) == 1)
-				return ;
-			if (c->add_x * cos(c->cur_d) < 0)
-				exit(1);
-			if (c->add_y * sin(c->cur_d) < 0)
-				exit(1);
 		}
 	}
 }
@@ -82,10 +96,11 @@ void	draw_view(t_vars *v)
 
 	c.wall_line = (unsigned int *)ft_calloc(WINDOW_HEIGHT, \
 										sizeof(unsigned int));
-	i = WINDOW_WIDTH;
-	while (--i >= 0)
+	i = -1;
+	while (++i < WINDOW_WIDTH)
 	{
-		c.cur_d = v->p_d + atan(((double)i * 2 / sqrt(3) / WINDOW_WIDTH) - 1);
+		c.cur_d = v->p_d + atan(((double)(i * 2 / sqrt(3)) / WINDOW_WIDTH) \
+															- (1 / sqrt(3)));
 		if (c.cur_d > M_PI * 2)
 			c.cur_d -= M_PI * 2;
 		else if (c.cur_d < 0)
@@ -94,7 +109,7 @@ void	draw_view(t_vars *v)
 		j = -1;
 		while (++j < WINDOW_HEIGHT)
 		{
-			ptr = v->view_addr + (j * v->view_line_len + i * (v->view_bpp / 8));
+			ptr = v->view_addr + (j * WINDOW_WIDTH + i) * 4;
 			*(unsigned int *)ptr = c.wall_line[j];
 		}
 	}

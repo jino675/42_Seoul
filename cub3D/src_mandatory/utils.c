@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:44:23 by jiryu             #+#    #+#             */
-/*   Updated: 2023/10/18 00:29:29 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/10/20 18:37:21 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,16 @@ static void	free_v(t_vars *v)
 	if (v->win_ptr != NULL)
 		mlx_destroy_window(v->mlx_ptr, v->win_ptr);
 	i = -1;
-	while (++i < 5)
+	while (++i < 8)
 	{
-		if (i < 4 && v->wall[i] != NULL)
+		if (i < 5 && v->wall[i] != NULL)
 			mlx_destroy_image(v->mlx_ptr, v->wall[i]);
-		if (v->staff[i] != NULL)
+		if (i < 5 && v->staff[i] != NULL)
 			mlx_destroy_image(v->mlx_ptr, v->staff[i]);
+		if (i < 6 && v->minimap_parts[i] != NULL)
+			mlx_destroy_image(v->mlx_ptr, v->minimap_parts[i]);
+		if (i < 8 && v->minimap_player[i] != NULL)
+			mlx_destroy_image(v->mlx_ptr, v->minimap_player[i]);
 	}
 }
 

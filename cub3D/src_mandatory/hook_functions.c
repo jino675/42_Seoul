@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 19:55:19 by jiryu             #+#    #+#             */
-/*   Updated: 2023/10/18 00:29:54 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/10/20 17:26:57 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,25 @@
 
 void	move_player(t_vars *t, int key);
 void	use_staff(t_vars *v, int key);
+void	change_direction(t_vars *v, int mode, int val);
 
 int	key_down_hook(int key, t_vars *v)
 {
-	if (key == left)
+	if (key == P)
 	{
-		mlx_mouse_move(v->win_ptr, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
-		v->p_d -= 0.04;
-		if (v->p_d < 0)
-			v->p_d += M_PI * 2;
-		v->new_draw = 1;
+		if (v->is_mouse_show == 0)
+		{
+			mlx_mouse_show();
+			v->is_mouse_show = 1;
+		}
+		else
+		{
+			mlx_mouse_move(v->win_ptr, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+			mlx_mouse_hide();
+			v->is_mouse_show = 0;
+		}
 	}
-	if (key == right)
-	{
-		mlx_mouse_move(v->win_ptr, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
-		v->p_d += 0.04;
-		if (v->p_d > M_PI * 2)
-			v->p_d -= M_PI * 2;
-		v->new_draw = 1;
-	}
+	change_direction(v, 0, key);
 	move_player(v, key);
 	return (0);
 }
@@ -48,22 +48,7 @@ int	mouse_click_hook(int button, int x, int y, t_vars *v)
 int	mouse_move_hook(int x, int y, t_vars *v)
 {
 	y = 0;
-	if (x < WINDOW_WIDTH / 2)
-	{
-		mlx_mouse_move(v->win_ptr, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
-		v->p_d -= 0.06;
-		if (v->p_d < 0)
-			v->p_d += M_PI * 2;
-		v->new_draw = 1;
-	}
-	if (x > WINDOW_WIDTH / 2)
-	{
-		mlx_mouse_move(v->win_ptr, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
-		v->p_d += 0.06;
-		if (v->p_d > M_PI * 2)
-			v->p_d -= M_PI * 2;
-		v->new_draw = 1;
-	}
+	change_direction(v, 1, x);
 	return (0);
 }
 

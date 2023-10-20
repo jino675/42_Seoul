@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:51:22 by jiryu             #+#    #+#             */
-/*   Updated: 2023/10/18 00:30:38 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/10/20 21:09:18 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static void	normalize_map(t_vars *v, t_etc *e)
 	free(e->map);
 }
 
-static void sub_get_map(t_vars *v, t_etc *e)
+static void	sub_get_map(t_vars *v, t_etc *e)
 {
 	if (e->is_map == 0)
 	{
