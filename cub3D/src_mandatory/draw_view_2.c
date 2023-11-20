@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 22:43:40 by jiryu             #+#    #+#             */
-/*   Updated: 2023/10/20 21:25:34 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/10/23 15:53:14 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ static void	distract_img_line(t_vars *v, t_cal *c)
 		else if (i < (WINDOW_HEIGHT - new_size) / 2 + new_size)
 		{
 			ptr = v->wall_addr[c->wall_idx];
-			ptr += ((int)pixel_idx * WALL_DEFAULT_SIZE + c->wall_line_idx) * 4;
-			c->wall_line[i] = *(unsigned int *)ptr;
+			ptr += (int)round(pixel_idx) * WALL_DEFAULT_SIZE * 4;
+			c->wall_line[i] = *(unsigned int *)(ptr + c->wall_line_idx * 4);
 			pixel_idx += c->distance;
 		}
 		else

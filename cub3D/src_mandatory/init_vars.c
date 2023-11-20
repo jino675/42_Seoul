@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 18:27:23 by jiryu             #+#    #+#             */
-/*   Updated: 2023/10/20 17:21:49 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/10/23 14:00:50 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ static void	sub_init_vars_1(t_vars *v)
 	v->view_addr = NULL;
 	v->f_rgb = -1;
 	v->c_rgb = -1;
-	v->map_path = NULL;
 	v->img_path = NULL;
 }
 
@@ -34,7 +33,7 @@ static void	sub_init_vars_2(t_vars *v)
 	v->minimap_x = 0;
 	v->minimap_y = 0;
 	v->minimap_d = 0;
-	v->staff_state = 1;
+	v->staff_state = 0;
 	v->is_end = 0;
 	v->is_moving = 0;
 	v->is_door_changed = 0;
@@ -59,12 +58,11 @@ void	init_vars(t_vars *v)
 		v->staff[i] = NULL;
 	}
 	i = -1;
-	while (++i < 8)
-	{
+	while (++i < 6)
 		v->minimap_parts[i] = NULL;
-		if (i < 4)
-			v->minimap_player[i] = NULL;
-	}
+	i = -1;
+	while (++i < 8)
+		v->minimap_player[i] = NULL;
 }
 
 void	init_mlx_win(t_vars *v)

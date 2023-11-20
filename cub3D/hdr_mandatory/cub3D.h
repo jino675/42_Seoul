@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 20:01:54 by jiryu             #+#    #+#             */
-/*   Updated: 2023/10/20 17:26:52 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/10/21 19:38:24 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ typedef struct s_vars
 	char			*minimap_addr;
 	int				f_rgb;
 	int				c_rgb;
-	char			*map_path;
 	char			*img_path;
 	double			p_x;
 	double			p_y;

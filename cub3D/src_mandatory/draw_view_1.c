@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 22:43:02 by jiryu             #+#    #+#             */
-/*   Updated: 2023/10/20 21:22:06 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/10/21 15:30:11 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,25 +38,6 @@ static void	get_add_val(t_vars *v, t_cal *c)
 		c->add_y = floor(v->p_y) - v->p_y;
 	}
 }
-
-// static int	check_orthogonal(t_vars *v, t_cal *c)
-// {
-// 	if (fabs(sin(c->cur_d)) <= 0.001)
-// 	{
-// 		if (check_xdir(v, c) == 1)
-// 			return (1);
-// 		else
-// 			return (2);
-// 	}
-// 	else if (fabs(cos(c->cur_d)) <= 0.001)
-// 	{
-// 		if (check_ydir(v, c) == 1)
-// 			return (1);
-// 		else
-// 			return (2);
-// 	}
-// 	return (0);
-// }
 
 static void	get_img_line(t_vars *v, t_cal *c)
 {

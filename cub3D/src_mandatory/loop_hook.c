@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 18:35:03 by jiryu             #+#    #+#             */
-/*   Updated: 2023/10/20 17:19:42 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/10/21 19:31:40 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	check_things(t_vars *v)
 		{
 			if (v->is_end == 1)
 				normal_exit("Clear!", v);
-			v->staff_state = 1;
+			v->staff_state = 0;
 			v->is_moving = 0;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 20:30:56 by jiryu             #+#    #+#             */
-/*   Updated: 2023/10/20 21:13:23 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/10/21 17:06:39 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ static void	sub_draw_parts(t_vars *v, int x, int y, int img_idx)
 					&buf, &buf, &buf);
 
 	i = -1;
-	while (++i < 30)
+	while (++i < MINIMAP_PART_SIZE)
 	{
 		j = -1;
-		while (++j < 30)
+		while (++j < MINIMAP_PART_SIZE)
 		{
 			ptr = v->minimap_addr;
 			ptr += (MINIMAP_PART_SIZE * y + i) * MINIMAP_SIZE * 4;

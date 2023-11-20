@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 20:42:18 by jiryu             #+#    #+#             */
-/*   Updated: 2023/10/18 00:30:36 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/10/23 16:13:43 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ static int	sub_get_color_val(t_etc *e, char **temp)
 		if (temp[i][j] == '\0' && ft_strlen(temp[i]) < 4)
 		{
 			cur_val = ft_atoi(temp[i]);
-			if (cur_val > 255)
-				break ;
+			if (cur_val > 255 || (j > 1 && temp[i][0] == '0'))
+				return (-1);
 			e->color *= 256;
 			e->color += cur_val;
 		}
 		else
-			break ;
+			return (-1);
 	}
 	if (temp[i] != NULL || i < 3)
 		return (-1);
@@ -60,10 +60,16 @@ static int	sub_get_color_val(t_etc *e, char **temp)
 static int	get_color_val(t_vars *v, t_etc *e)
 {
 	int		i;
+	int		comma_cnt;
 	int		flag;
 	char	**temp;
 
-	if (ft_isdigit(e->parts[1][ft_strlen(e->parts[1]) - 1]) == 0)
+	comma_cnt = 0;
+	i = -1;
+	while (e->parts[1][++i] != '\0')
+		if (e->parts[1][i] == ',')
+			++comma_cnt;
+	if (comma_cnt != 2)
 		return (-1);
 	temp = ft_split(e->parts[1], ',');
 	if (temp == NULL)

@@ -6,7 +6,7 @@
 #    By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/07 20:30:45 by jiryu             #+#    #+#              #
-#    Updated: 2023/10/20 21:02:04 by jiryu            ###   ########.fr        #
+#    Updated: 2023/10/23 16:18:03 by jiryu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,13 +40,33 @@ DIR_HDRS_MANDATORY = ./hdr_mandatory/
 HDRS_MANDATORY = ./hdr_mandatory/cub3D.h
 EXE_MANDATORY = ./src_mandatory/cub3D_mandatory
 
-# DIR_SRCS_BONUS = ./src_bonus/
-# SRCS_BONUS = main_bonus.c
+DIR_SRCS_BONUS = ./src_bonus/
+SRCS_BONUS = main_bonus.c					\
+				utils_bonus.c					\
+				init_vars_bonus.c				\
+				map_read_1_bonus.c			\
+				map_read_2_bonus.c			\
+				map_read_3_bonus.c			\
+				map_read_4_bonus.c			\
+				load_images_1_bonus.c			\
+				load_images_2_bonus.c			\
+				hook_functions_bonus.c		\
+				loop_hook_bonus.c				\
+				draw_view_1_bonus.c			\
+				draw_view_2_bonus.c			\
+				draw_view_3_bonus.c			\
+				move_player_1_bonus.c			\
+				move_player_2_bonus.c			\
+				use_staff_1_bonus.c			\
+				use_staff_2_bonus.c			\
+				draw_minimap_bonus.c			\
+				change_direction_bonus.c
 
-# OBJS_BONUS = $(addprefix $(DIR_SRCS_BONUS), $(SRCS_BONUS:.c=.o))
+OBJS_BONUS = $(addprefix $(DIR_SRCS_BONUS), $(SRCS_BONUS:.c=.o))
 
-# HDRS_BONUS = ./hdr_bonus/cub3D_bonus.h
-# EXE_BONUS = ./src_bonus/cub3D_bonus
+DIR_HDRS_BONUS = ./hdr_bonus/
+HDRS_BONUS = ./hdr_bonus/cub3D_bonus.h
+EXE_BONUS = ./src_bonus/cub3D_bonus
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
@@ -68,17 +88,17 @@ CP = cp
 all : $(NAME)
 
 $(NAME) : $(EXE_MANDATORY)
-# bonus : $(EXE_BONUS)
+bonus : $(EXE_BONUS)
 
 $(EXE_MANDATORY) : $(MLX) $(LIBFT) $(OBJS_MANDATORY) $(HDRS_MANDATORY)
-	$(RM) $(EXE_BONUS)
+	$(RM) $(EXE_BONUS) $(OBJS_BONUS)
 	$(CC) $(CFLAGS) $(INC_LIBS) $(FW_OPT) -o $@ $(OBJS_MANDATORY)
 	$(CP) $(EXE_MANDATORY) $(NAME)
 
-# $(EXE_BONUS) : $(LIBFT) $(OBJS_BONUS) $(HDRS_BONUS)
-# 	$(RM) $(EXE_MANDATORY)
-# 	$(CC) $(CFLAGS) $(INC_OPT) $(FW_OPT) -o $@ $(OBJS_BONUS)
-# 	$(CP) $(EXE_BONUS) $(NAME)
+$(EXE_BONUS) : $(MLX) $(LIBFT) $(OBJS_BONUS) $(HDRS_BONUS)
+	$(RM) $(EXE_MANDATORY) $(OBJS_MANDATORY)
+	$(CC) $(CFLAGS) $(INC_LIBS) $(FW_OPT) -o $@ $(OBJS_BONUS)
+	$(CP) $(EXE_BONUS) $(NAME)
 
 $(MLX) :
 	$(MAKE) -C $(DIR_MLX) all
@@ -92,7 +112,7 @@ $(LIBFT) :
 
 clean :
 	$(RM) $(OBJS_MANDATORY)
-# $(RM) $(OBJS_BONUS)
+	$(RM) $(OBJS_BONUS)
 
 fclean :
 	$(RM) $(NAME) $(EXE_MANDATORY) $(EXE_BONUS)

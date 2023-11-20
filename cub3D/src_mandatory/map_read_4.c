@@ -6,7 +6,7 @@
 /*   By: jiryu <jiryu@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:40:42 by jiryu             #+#    #+#             */
-/*   Updated: 2023/10/18 00:08:59 by jiryu            ###   ########.fr       */
+/*   Updated: 2023/10/23 14:43:28 by jiryu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	check_map(t_vars *v)
 	while (++i < v->map_height)
 	{
 		j = -1;
-		while (v->map[i][++j] != '\0')
+		while (++j < v->map_width)
 		{
 			p_cnt += check_component(v, i, j);
 			if (v->map[i][j] != '1' && v->map[i][j] != ' ' && \
